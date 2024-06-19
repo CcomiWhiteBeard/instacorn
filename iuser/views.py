@@ -19,6 +19,7 @@ def hashing_password(m_pwd):
     hashedpw = hashlib.md5(str(m_pwd + m_salt).encode('utf-8')).hexdigest()
 
     return m_salt, hashedpw
+
 #로그인
 def inslogin(request):
     if request.method=='GET':
