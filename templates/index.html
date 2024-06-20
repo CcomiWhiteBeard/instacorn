@@ -1,7 +1,12 @@
-
 {% load static %}
 {% block head %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock head %}
 
 {% block title %}
@@ -40,6 +45,39 @@
                 </div>
             {% endif %}
 
+
+            {% if popup_message %}
+            <!-- 팝업 메시지가 있을 경우 모달 창으로 띄우기 -->
+            <script>
+            $(document).ready(function() {
+                $('#popupModal').modal('show');
+            });
+            </script>
+            {% endif %}
+
+            <!-- 팝업 모달 -->
+            <div class="modal fade" id="popupModal" tabindex="-1" role="dialog" aria-labelledby="popupModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="popupModalLabel">알림</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>{{ popup_message }}</p>
+                            <p><span id="emailAddress">admin_email@example.com</span></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
             <div class="card mt-2">
                 <div class="text-center mt-3">
                     <p>계정이 없으신가요? <a href="insjoin.do">가입하기</a></p>
@@ -48,4 +86,6 @@
         </div>
     </div>
 </div>
+
+
 {% endblock body %}

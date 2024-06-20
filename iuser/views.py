@@ -23,10 +23,10 @@ def hashing_password(m_pwd):
 
 #로그인
 def inslogin(request):
-    if request.method=='GET':
-        return render(request, 'index.html')
+    if request.method == 'GET':
+        return render(request, 'index.html', {'popup_message': ''})
     
-    else:
+    elif request.method == 'POST':
         m_id = request.POST.get('m_id')
         m_pwd = request.POST.get('m_pwd')
 
@@ -39,11 +39,11 @@ def inslogin(request):
 
             # auth_user 테이블에 없는 경우 insta_member 테이블에서 확인
             cursor = connection.cursor()
-            msg = "select m_id, m_pwd, m_salt, m_active from insta_member where m_id = %s"
+            msg = "SELECT m_id, m_pwd, m_salt, m_active FROM insta_member WHERE m_id = %s"
             cursor.execute(msg, [m_id])
             data = cursor.fetchone()
             
-            #아이디가 틀렸을 때
+            # 아이디가 틀렸을 때
             if not data:
                 messages.error(request, '아이디가 존재하지 않습니다')
                 return redirect('inslogin.do')
@@ -58,8 +58,9 @@ def inslogin(request):
                 return redirect('inslogin.do')
             
             if not m_active:
-                messages.error(request, '계정이 비활성화되었습니다.')
-                return render(request, 'instacorn/block.html')
+                # 팝업 메시지 전달
+                context = {'popup_message': '회원님의 계정이 신고로 인하여 비활성화되었습니다. 계정 복구에 관한 문의사항은 아래 이메일로 문의해주세요.'}
+                return render(request, 'index.html', context)
             
             request.session['m_id'] = regid
             return render(request, 'instacorn/main.html')
@@ -88,22 +89,31 @@ def insjoin(request):
         m_pwd = request.POST.get('m_pwd')
 
         try:
-            cursor = connection.cursor()
-            msg="select m_id from insta_member where m_id = (%s)"
-            cursor.execute(msg, (m_id,))
-            data = cursor.fetchall()
+            with connection.cursor() as cursor:
+                msg="select * from insta_member where m_id = (%s)"
+                cursor.execute(msg, (m_id, ))
+                data_id = cursor.fetchall()
+                print('data_id', data_id)
 
-            if len(data) != 0:
-                messages.error(request, '이미 존재하는 아이디입니다. 다른 아이디를 사용해주세요.')
-                return redirect('insjoin.do')
+                if len(data_id) != 0:
+                    messages.error(request, '이미 존재하는 아이디입니다. 다른 아이디를 사용해주세요.')
+                    return redirect('insjoin.do')
+                
+                msg="select * from insta_member where m_email = (%s)"
+                cursor.execute(msg, (m_email, ))
+                data_email = cursor.fetchall()
+                print('data_email', data_email)
+
+                if len(data_email) != 0:
+                    messages.error(request, '이미 존재하는 이메일입니다. 다른 이메일를 사용해주세요.')
+                    return redirect('insjoin.do')
             
-            else:
                 m_salt, hashedpw = hashing_password(m_pwd)
                 msg="insert into insta_member(m_id, m_pwd, m_name, m_email, m_salt) values(%s, %s, %s, %s, %s)"
                 cursor.execute(msg, (m_id, hashedpw, m_name, m_email, m_salt))
 
-                messages.success(request, '회원가입 완료, 로그인을 해주세요.')
-                return redirect('inslogin.do')
+            messages.success(request, '회원가입 완료, 로그인을 해주세요.')
+            return redirect('inslogin.do')
                 
         except:
             connection.rollback()
