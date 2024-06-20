@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.db  import connection 
 from django.contrib import messages
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 import string
 import random
@@ -30,33 +31,36 @@ def inslogin(request):
         m_pwd = request.POST.get('m_pwd')
 
         try:
+            # auth_user 테이블에서 사용자 인증
+            user = authenticate(request, username=m_id, password=m_pwd)
+            if user is not None and user.is_superuser:
+                login(request, user)
+                return redirect('/admin/')
+
+            # auth_user 테이블에 없는 경우 insta_member 테이블에서 확인
             cursor = connection.cursor()
-# m_salt 비밀번호 보안 강화
-            msg = "select m_id, m_pwd, m_salt from insta_member where m_id = %s"
+            msg = "select m_id, m_pwd, m_salt, m_active from insta_member where m_id = %s"
             cursor.execute(msg, [m_id])
             data = cursor.fetchone()
             
-#아이디가 틀렸을 때
+            #아이디가 틀렸을 때
             if not data:
-                messages.error(request, '아이디나 비밀번호가 일치하지 않습니다')
+                messages.error(request, '아이디가 존재하지 않습니다')
                 return redirect('inslogin.do')
 
-            regid, regpw, m_salt = data
-
-            # 디버깅을 위해 데이터 출력
-            print(f"DB regpw: {regpw}")
-            print(f"DB m_salt: {m_salt}")
+            regid, regpw, m_salt, m_active = data           
 
             # MD5와 저장된 솔트를 사용하여 비밀번호를 검증
             hashedpw = hashlib.md5(str(m_pwd + m_salt).encode('utf-8')).hexdigest()
-
-            # 해시된 비밀번호 출력
-            print(f"Input hashedpw: {hashedpw}")
             
             if hashedpw != regpw:
-                messages.error(request, '아이디나 비밀번호가 일치하지 않습니다')
+                messages.error(request, '비밀번호가 일치하지 않습니다')
                 return redirect('inslogin.do')
-
+            
+            if not m_active:
+                messages.error(request, '계정이 비활성화되었습니다.')
+                return render(request, 'instacorn/block.html')
+            
             request.session['m_id'] = regid
             return render(request, 'instacorn/main.html')
                 
