@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -82,9 +83,9 @@ DATABASES = {
     'default':{
         'ENGINE': 'django.db.backends.mysql',
         'NAME' : 'naver',
-        'USER' : 'acon',
+        'USER' : 'root',
         'PASSWORD' : '1234',
-        'HOST' : '192.168.0.59',
+        'HOST' : 'localhost',
         'PORT' : '3306' ,
     }
 }
@@ -132,12 +133,8 @@ STATICFILES_DIRS=[ os.path.join(BASE_DIR, 'static'), ]
 MEDIA_URL = 'media/'    
 MEDIA_ROOT=os.path.join(BASE_DIR, 'media') 
 
-#admin에서 로그아웃시 이동할 페이지
-LOGOUT_REDIRECT_URL = '/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-
