@@ -60,7 +60,9 @@ def instaselect(request):
         msg = f"""
             select m_img, m_id, m_name from 
                 (select * from insta_member m inner join insta_board b on m.m_no = b.b_no) mb inner join insta_board_hash h  
-                    on bh_code = b_code where bh_content like '%{sval}%' or m_id like '%{sval}%' or m_name like '%{sval}%'
+                    on bh_code = b_code where bh_content like '%{sval}%'
+            union
+            select m_img, m_id, m_name  from insta_member where m_id like '%{sval}%' or m_name like '%{sval}%'
             """
         print(msg)
 
