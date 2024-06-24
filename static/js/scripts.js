@@ -1,54 +1,65 @@
 /*!
-* Start Bootstrap - Agency v7.0.12 (https://startbootstrap.com/theme/agency)
-* Copyright 2013-2023 Start Bootstrap
-* Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-agency/blob/master/LICENSE)
+* Start Bootstrap - Landing Page v6.0.0 (https://startbootstrap.com/theme/landing-page)
+* Copyright 2013-2021 Start Bootstrap
+* Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-landing-page/blob/master/LICENSE)
 */
-//
-// Scripts
-// 
+// This file is intentionally blank
+// Use this file to add JavaScript to your project
+
+/*!
+* Start Bootstrap - Landing Page v6.0.0 (https://startbootstrap.com/theme/landing-page)
+* Copyright 2013-2021 Start Bootstrap
+* Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-landing-page/blob/master/LICENSE)
+*/
+// This file is intentionally blank
+// Use this file to add JavaScript to your project
 
 window.addEventListener('DOMContentLoaded', event => {
 
-    // Navbar shrink function
-    var navbarShrink = function () {
-        const navbarCollapsible = document.body.querySelector('#mainNav');
-        if (!navbarCollapsible) {
-            return;
-        }
-        if (window.scrollY === 0) {
-            navbarCollapsible.classList.remove('navbar-shrink')
-        } else {
-            navbarCollapsible.classList.add('navbar-shrink')
-        }
+	// 도서 추가 글자 수 제한
+/*	$('#inputBookSummary').on('keyup', function() {
+		$('#inputBookSummaryCount').html("("+$(this).val().length+" / 1000)");
+		if($(this).val().length > 1000) {
+			$(this).val($(this).val().substring(0, 1000));
+			$('#inputBookSummaryCount').html("(1000 / 1000)");
+		}
+	});*/
 
-    };
-
-    // Shrink the navbar 
-    navbarShrink();
-
-    // Shrink the navbar when page is scrolled
-    document.addEventListener('scroll', navbarShrink);
-
-    //  Activate Bootstrap scrollspy on the main nav element
-    const mainNav = document.body.querySelector('#mainNav');
-    if (mainNav) {
-        new bootstrap.ScrollSpy(document.body, {
-            target: '#mainNav',
-            rootMargin: '0px 0px -40%',
-        });
-    };
-
-    // Collapse responsive navbar when toggler is visible
-    const navbarToggler = document.body.querySelector('.navbar-toggler');
-    const responsiveNavItems = [].slice.call(
-        document.querySelectorAll('#navbarResponsive .nav-link')
-    );
-    responsiveNavItems.map(function (responsiveNavItem) {
-        responsiveNavItem.addEventListener('click', () => {
-            if (window.getComputedStyle(navbarToggler).display !== 'none') {
-                navbarToggler.click();
-            }
-        });
-    });
-
+	// 공지사항 글자 수 제한
+	$('#inputNoticeContent').on('keyup', function() {
+		$('#inputNoticeContentCount').html("("+$(this).val().length+" / 1000)");
+		if($(this).val().length > 1000) {
+			$(this).val($(this).val().substring(0, 1000));
+			$('#inputNoticeContentCount').html("(1000 / 1000)");
+		}
+	});
+	
+	// 추천 도서 글자 수 제한
+	$('#inputGoodContent').on('keyup', function() {
+		$('#inputGoodContentCount').html("("+$(this).val().length+" / 1000)");
+		if($(this).val().length > 1000) {
+			$(this).val($(this).val().substring(0, 1000));
+			$('#inputGoodContentCount').html("(1000 / 1000)");
+		}
+	});
+	
+	// 댓글 글자 수 제한
+	$('#inputCommentContent').on('keyup', function() {
+		$('#inputCommentContentCount').html("("+$(this).val().length+" / 1000)");
+		if($(this).val().length > 1000) {
+			$(this).val($(this).val().substring(0, 1000));
+			$('#inputCommentContentCount').html("1000 / 1000)");
+		}
+	});
+	
+	// 게시글 글자 수 제한
+	$('#inputBoardContent').on('keyup', function() {
+		$('#inputBoardContentCount').html("("+$(this).val().length+" / 1000)");
+		if($(this).val().length > 1000) {
+			$(this).val($(this).val().substring(0, 1000));
+			$('#inputBoardContentCount').html("(1000 / 1000)");
+		}
+	});
+	
+	
 });

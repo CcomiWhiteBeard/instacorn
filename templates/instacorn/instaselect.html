@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> [ blogselect.html ] </title> 
+	<style type="text/css">
+	  *{font-size: 14pt; }
+	  b{color:green; font-weight: bold;}
+	  div{text-align:center;}
+    a{ text-decoration: none; color:blue }
+    a:hover{ text-decoration: underline; font-size: 16pt; }
+	</style>
+</head> 
+<body>
+  <div>
+   insta어플  instaselect.html
+    
+      
+      {% if hashresult %}
+      <table align="center" border="1" width=500 cellspacing="0">
+        <tr align="right">
+          <td colspan="1"> 레코드갯수:  </td>
+        </tr>
+  
+        <tr bgcolor="beige">  
+          <th>해시태그내용</th>
+        </tr>
+        {% for hdto in hashresult %}
+          <tr>
+            <td> {{ hdto.content }} </td> 
+          </tr>
+        {% endfor %}
+      {% else %}
+      <table align="center" border="1" width=500 cellspacing="0">
+        <tr align="right">
+          <td colspan="3"> 레코드갯수:  </td>
+        </tr>
+  
+        <tr bgcolor="beige">  
+          <th>프로필명</th> <th>아이디</th>  <th>이 름</th> 
+        </tr>
+        {% for jdto in justresult %}
+          <tr>
+            <td> {{ jdto.profileimg }} </td> 
+            <td> {{ jdto.id }} </td> 
+            <td> {{ jdto.name }} </td> 
+          </tr>
+        {% endfor %}
+      {% endif %}
+
+    <tr align="center">
+      <td colspan="6"> 
+      
+      </td>
+    </tr>
+
+    <tr align="center">
+      <td colspan="5">
+        <form name="searchform" action="instaselect.do">
+          <input type="text" name="keyword">
+          <input type="submit" value="검색">
+        </form>
+      </td>
+    </tr>
+    </table>            
+    
+    <p></p>
+    <button type='button' onclick="location.href='/'"> index </button>
+    <button type='button' onclick="location.href='#'"> 전체출력 </button> 
+    <button type='button' onclick="location.href='#'"> 등록 </button>   
+
+	</div>
+</body>
+</html>

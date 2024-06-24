@@ -26,10 +26,10 @@ urlpatterns = [
     path('instest.do', views.instest) ,
     
     #메인페이지
-
+    path('instahome.do', views.instahome),
     
     #검색페이지
-
+    path('instaselect.do', views.instaselect)
 
     #상세페이지
 
