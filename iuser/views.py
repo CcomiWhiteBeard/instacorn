@@ -39,7 +39,7 @@ def inslogin(request):
 
             # auth_user 테이블에 없는 경우 insta_member 테이블에서 확인
             cursor = connection.cursor()
-            msg = "SELECT m_id, m_pwd, m_salt, m_active FROM insta_member WHERE m_id = %s"
+            msg = "SELECT m_no, m_id, m_pwd, m_salt, m_active FROM insta_member WHERE m_id = %s"
             cursor.execute(msg, [m_id])
             data = cursor.fetchone()
             
@@ -48,7 +48,7 @@ def inslogin(request):
                 messages.error(request, '아이디가 존재하지 않습니다')
                 return redirect('inslogin.do')
 
-            regid, regpw, m_salt, m_active = data           
+            m_no, regid, regpw, m_salt, m_active = data           
 
             # MD5와 저장된 솔트를 사용하여 비밀번호를 검증
             hashedpw = hashlib.md5(str(m_pwd + m_salt).encode('utf-8')).hexdigest()
@@ -62,8 +62,9 @@ def inslogin(request):
                 context = {'popup_message': '회원님의 계정이 신고로 인하여 비활성화되었습니다. 계정 복구에 관한 문의사항은 아래 이메일로 문의해주세요.'}
                 return render(request, 'index.html', context)
             
-            request.session['m_id'] = regid
-            return render(request, 'instacorn/main.html')
+            request.session['m_no'] = m_no
+            #return render(request, 'instacorn/main.html')
+            return redirect('home.do')
                 
         except Exception as e:
             connection.rollback()

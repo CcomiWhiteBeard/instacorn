@@ -83,9 +83,9 @@ DATABASES = {
     'default':{
         'ENGINE': 'django.db.backends.mysql',
         'NAME' : 'naver',
-        'USER' : 'root',
+        'USER' : 'acon',
         'PASSWORD' : '1234',
-        'HOST' : 'localhost',
+        'HOST' : '192.168.0.59',
         'PORT' : '3306' ,
     }
 }
