@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Detail Page</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles_detail.css' %}">
+    <script>
+      //댓글수정관련 자바스크립트
+      function re_edit(r_num, r_content, r_code){
+        reply_form.bt_save.value = "댓글수정";
+        reply_form.r_num.value = r_num
+        reply_form.r_content.value = r_content
+        reply_form.r_code.value = r_code
+      }//end
+    
+      //댓글저장&수정
+      function re_save(){
+        var bt = reply_form.bt_save.value ;
+        var rnu = reply_form.r_num.value ;
+        var rct = reply_form.r_content.value ;
+        var rco = reply_form.r_code.value ;
+    
+        if(bt=="등록"){
+          if( rct == "" || rct==null ) {
+            alert("내용을 입력해주세요!")
+            return;
+          }
+        var msg = "insreplyinsert.do?r_content="+rct+"&r_code="+rco;
+        document.reply_form.action=msg;
+        document.reply_form.method="post";
+        document.reply_form.submit();
+        }else if(bt=="댓글수정"){
+          reply_form.bt_save.value="댓글저장";
+          var msg = "insreplyupdate.do?r_num="+rnu+"&r_content="+rct+"&r_code="+rco;
+          document.reply_form.action = msg;
+          document.reply_form.method = "post";
+          document.reply_form.submit();
+        }
+      }
+
+      // 팝업 창 열기
+      function openPopup(url) {
+        var popupWindow = window.open(url, "popupWindow", "width=500, height=400, scrollbars=yes");
+        popupWindow.onunload = function(){
+          window.opener.location.reload();
+        }
+      }
+
+      // window.onload = function(){
+      //   if(){
+      //     window.location.reload();
+      //   }
+      // }
+    </script>
+    <style>
+        .post-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .post-container {
+            margin: 0 auto;
+            max-width: 600px;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .post-image{
+          display: flex;
+          justify-content: center;
+        }
+
+        .post-comments {
+              border-top: 1px solid #e1e1e1;
+              padding-top: 10px;
+        }
+
+        .comment {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 10px;
+        }
+
+        .comment-actions{
+          display: flex;
+          gap: 10px;
+        }
+
+        .comment-user {
+              margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+  <form name="reply_form" method="post" action="insreplyinsert.do">
+    {% csrf_token %}
+    {% for i in result %}
+    <div class="post-container">
+        <div class="post-image">
+          <img src="{{ MEDIA_URL }}{{ i.b_photo }}" alt="Post Image">  
+          <!-- <img src="{{ MEDIA_URL }}{{ i.b_photo }}" alt="Post Image"> -->
+        </div>
+        <div class="post-details">
+            <div class="post-header">
+                <img src="{{ MEDIA_URL }}{{ i.b_photo }}" alt="User Avatar" class="user-avatar"> <!-- 수정 필요 -->
+                <div class="user-info">
+                    <span class="username">username</span>
+                </div>
+                <div align="right">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <button type="button" onclick="openPopup('insupdate.do?idx={{idx}}')">수정</button>
+                  <!-- <button type="button" onclick="location.href='insupdate.do?idx={{idx}}'">수정</button> -->
+                  <button type="button" onclick="location.href='insdelete.do?idx={{idx}}'">삭제</button>  
+                </div>
+            </div>
+            <div class="post-content">
+                <p>{{ i.b_content }}</p>
+                <p>{{ i.b_date | date:"Y.m.d" }}</p>
+            </div>
+            <div class="post-actions">
+              <!-- 좋아요 구현 -->
+
+            </div>
+            <div style="overflow: auto; height:150px; padding:10px;">
+            {% for i in rresult %}
+              <div class="post-comments">
+                <div class="comment">
+                    <span class="comment-user">{{ result.0.b_no }} b_no값</span>
+                    <span class="comment-text">{{ i.r_content }}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="comment-actions">
+                        <button type="button" onclick="re_edit('{{ i.r_num }}', '{{ i.r_content }}', '{{ i.r_code }}')">수정</button>
+                        <button type="button" onclick="location.href='insreplydelete.do?ridx={{ i.r_num }}&idx={{ i.r_code }}'">삭제</button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+          </div>
+            <div class="add-comment">
+                <input type="text" name="r_content" placeholder="Add a comment...">
+                <!-- <button class="post-comment-button">Post</button> -->
+                <input type="hidden" name="r_no" value="1"> <!-- r_no값 나중에 value값 다시 주기 -->
+                <input type="hidden" name="r_num" value="">
+                <input type="hidden" name="r_code" value="{{result.0.b_code}}">
+                <input type="button" id="bt_save" name="bt_save" value="등록" onclick="re_save()">
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <script src="{% static 'js/scripts.js' %}"></script>
+  </form>
+  </body>
+</html>

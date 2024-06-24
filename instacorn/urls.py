@@ -22,8 +22,6 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    #테스트용 지워도 됨
-    path('instest.do', views.instest) ,
     
     #메인페이지
 
@@ -32,12 +30,17 @@ urlpatterns = [
 
 
     #상세페이지
-
-
+    path('insdetail.do', views.insdetail) ,
+    path('insdelete.do', views.insdelete) , 
+    path('insupdate.do', views.insupdate) ,
+    path('insupdatesave.do', views.insupdatesave) ,
+    
     #마이페이지
 
 
     #댓글
-    
+    path('insreplyinsert.do', views.insreplyinsert) ,
+    path('insreplydelete.do', views.insreplydelete) ,
+    path('insreplyupdate.do', views.insreplyupdate) ,
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
