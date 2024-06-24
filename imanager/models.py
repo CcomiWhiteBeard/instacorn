@@ -25,7 +25,8 @@ class InstaMemberSingo(models.Model):
     ms_no = models.OneToOneField(InstaMember, on_delete=models.CASCADE, db_column='ms_no', primary_key=True)
 
     def __str__(self):
-        return f"Report for {self.ms_no.m_name}"
+        #return f"Report for {self.ms_no.m_name}"
+        return str(self.ms_no.m_no)
 
     class Meta:
         managed = False
@@ -50,4 +51,18 @@ class InstaBoard(models.Model):
         db_table = 'insta_board'
         verbose_name = '전체 게시물'  # 단수형 이름 설정
         verbose_name_plural = '전체 게시물'  # 복수형 이름 설정
+
+
+class InstaBoardSingo(models.Model):
+    bs_code = models.OneToOneField(InstaBoard, on_delete=models.CASCADE, db_column='bs_code', primary_key=True)
+
+    def __str__(self):
+        #return f"Report for {self.bs_code.b_content}"
+        return str(self.bs_code.b_code)
+
+    class Meta:
+        managed = False  # Django가 이 테이블을 관리하지 않도록 설정합니다.
+        db_table = 'insta_board_singo'
+        verbose_name = '신고된 게시물'
+        verbose_name_plural = '신고된 게시물'
 

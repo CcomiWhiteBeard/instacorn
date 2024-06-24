@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-from .models import InstaMemberSingo, InstaMember, InstaBoard
+from .models import InstaMemberSingo, InstaMember, InstaBoard, InstaBoardSingo
 
+#계정 활성화 여부 필터
 class MActiveBooleanFilter(admin.SimpleListFilter):
     title = _('계정 활성화 상태')
     parameter_name = 'm_active'
@@ -17,6 +18,7 @@ class MActiveBooleanFilter(admin.SimpleListFilter):
             return queryset.filter(m_active=self.value())
         return queryset
     
+#게시물 상태 필터
 class BActiveBooleanFilter(admin.SimpleListFilter):
     title = _('게시물 상태')
     parameter_name = 'b_active'
@@ -33,21 +35,24 @@ class BActiveBooleanFilter(admin.SimpleListFilter):
         return queryset    
 
 
-
+#전체회원
 @admin.register(InstaMember)
 class InstaMemberAdmin(admin.ModelAdmin):
     list_display = ('m_no', 'm_id', 'm_name', 'm_email', 'm_active')
     list_editable = ('m_active',)
-    search_fields = ('m_no', 'm_id', 'm_email','m_active',)
+    search_fields = ('m_no', 'm_id', 'm_email','m_name',)
     readonly_fields = ('m_no', 'm_id', 'm_pwd', 'm_salt', 'm_name', 'm_email', 'm_img', 'm_date')
     list_filter = (MActiveBooleanFilter,)
 
-
+#신고회원(비활성 처리 후 신고리스트에서 삭제)
 @admin.register(InstaMemberSingo)
 class InstaMemberSingoAdmin(admin.ModelAdmin):
-    list_display = ('ms_no', 'reported_user', 'm_active_status')
+    list_display = ('ms_no_display', 'reported_user', 'm_active_status')
     readonly_fields = ('ms_no',)
     actions = ['set_inactive']
+
+    def ms_no_display(self, obj):
+        return obj.ms_no.m_no
 
     def reported_user(self, obj):
         return obj.ms_no.m_id
@@ -71,6 +76,7 @@ class InstaMemberSingoAdmin(admin.ModelAdmin):
     set_inactive.short_description = '선택된 계정들을 비활성 처리 합니다.'
 
 
+#전체 게시물
 @admin.register(InstaBoard)
 class InstaBoardAdmin(admin.ModelAdmin):
     list_display = ('b_code', 'b_content', 'b_photo', 'b_no', 'b_date', 'b_active')
@@ -84,8 +90,38 @@ class InstaBoardAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return True
-    
 
+
+#신고된 게시물
+@admin.register(InstaBoardSingo)
+class InstaBoardSingoAdmin(admin.ModelAdmin):
+    list_display = ('bs_code_display', 'reported_content', 'b_active_status')
+    readonly_fields = ('bs_code',)
+    actions = ['set_inactive']
+
+    def bs_code_display(self, obj):
+        return obj.bs_code.b_code
+    
+    def reported_content(self, obj):
+        return obj.bs_code.b_content
+
+    def b_active_status(self, obj):
+        return obj.bs_code.b_active
+
+    b_active_status.short_description = '게시물 상태'
+
+    def set_inactive(self, request, queryset):
+        updated_count = 0
+        for singo in queryset:
+            singo.bs_code.b_active = False 
+            singo.bs_code.save()
+            updated_count += 1
+
+            singo.delete()
+        
+        self.message_user(request, f'{updated_count}건이 게시물 숨김 처리 되었습니다.')
+
+    set_inactive.short_description = '선택된 게시물들을 숨김 처리 합니다.'
 
     
 
