@@ -93,7 +93,7 @@
 #nav2ul {
      z-index: 10;
      display: block;
-     top: 14rem;
+     top: 50rem;
      background-color: var(--secondry-color);
      position: absolute;
      left: .7rem;

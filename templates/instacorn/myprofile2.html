@@ -13,12 +13,15 @@
           ul li{
                list-style: none;
           }
+          
+          /*팔로워 팔로잉 버튼*/
           .btn_follower:hover{
                cursor: pointer;
           }
           .btn_following:hover{
                cursor: pointer;
           }
+
           /* 팔로워 팝업 */
           .popup_follower{
                width: 100%;
@@ -121,11 +124,12 @@
           .popup_following_cancel:hover{
                cursor: pointer;
           }
-
           html, body{
                overflow: auto;
                height: 100%;
           }
+
+          /* 탭 변경 */
           .changeimage h5:hover{
                border-top: 1px solid var(--primary-color);
                color: var(--primary-color);
@@ -137,7 +141,6 @@
                gap: 8px;
                margin-bottom: 4rem;
           }
-
           [class*='imagechild'] img {
                object-fit: fill;
                margin: 2rem 0;
@@ -367,6 +370,7 @@
                $('#like_tab').css('border','none');
                $('#board_tab').css('color','black');
                $('#board_tab').css('border-top','1px solid black');
+
                $('.imagechild_like').hide();
                $('.imagechild').show();
           }//end
@@ -380,6 +384,7 @@
                $('.imagechild').hide();
                $('.imagechild_like').show();
           }
+
           function userInfo(){
                $('.popup_user').css('display', 'flex');
           }
@@ -508,7 +513,7 @@
                     </div>
                </div>
           </div>
-          <!--<div id="moreopt">
+          <!-- <div id="moreopt">
                <div class="moreopt">
                     <ul><a href="#">Change password</a></ul>
                     <hr>
@@ -532,8 +537,7 @@
                     <hr>
                     <ul onclick="cancelmoreopt()"><a href="#">Cancel</a></ul>
                </div>
-
-          </div>-->
+          </div> -->
      </div>
 
      <!-- 팔로워 팝업 -->
