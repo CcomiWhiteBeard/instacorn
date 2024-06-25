@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> [ blogselect.html ] </title> 
+	<style type="text/css">
+	  *{font-size: 14pt; }
+	  b{color:green; font-weight: bold;}
+	  div{text-align:center;}
+    a{text-decoration: none; color:blue; }
+    a:hover{text-decoration: underline; font-size: 16pt;}
+    #rcnt{font-size: 12pt; color: red;}
+	</style>
+</head> 
+<body>
+  <!-- blog어플  blogselect.html주석  -->
+  <p></p>
+
+ 
+  <h2> blog전체출력 처리 </h2>
+  <table border="1" width=600 cellspacing="0">
+    <tr align="right">
+      <td colspan="5">  
+           <a href="/"> [index] </a>
+           검색건수:{{stotal}}/총건수:{{total}} &nbsp; </td>
+    </tr>
+
+    <tr bgcolor="yellow">  
+      <th>행번호</th> <th>code</th>  <th>name</th>  <th>title</th> <th>wdate</th>    
+    </tr>
+
+    {% for dto  in result %}
+      <tr>
+        <td> {{ dto.rn }} </td> 
+        <td> {{ dto.code }} </td> 
+        <td> {{ dto.name | lower }} </td>
+        <td> <a href="blogdetail.do?idx={{dto.code}}">  {{ dto.title | lower}}{% if dto.rcnt != 0 %}<span id="rcnt">[{{dto.rcnt}}]</span> {% endif %}</a> </td>            
+        <td align="center"> {{ dto.wdate }}</td>
+      </tr>
+    {% endfor %}
+
+    <tr align="center">
+      <td colspan="5"> 
+          <!-- 이전   [1]~[10]  [11]~[20] [21]~[30]     pageCount=14--> 
+          {% if startPage != 1 %}
+              <a href="blogselect.do?page={{ startPage|add:'-10' }}">[이전]</a>
+          {% endif %}
+
+ 
+          <!-- 페이지번호 for반복문 if제어문    --> 
+          {% for i in "x"|rjust:"10" %}		
+              {% if pageNum == forloop.counter0|add:startPage %}
+                    <span style=color:blue;>[{{ forloop.counter0|add:startPage }}]</span>
+              {% else %}
+                    {% if forloop.counter0|add:startPage < pageCount %}
+                      <a href="blogselect.do?page={{ forloop.counter0|add:startPage }}{{ returnpage }}">[{{ forloop.counter0|add:startPage }}]</a>
+                    {% endif %}
+              {% endif %}
+          {% endfor %}
+
+          <!-- 다음  [1]~[10]  [11]~[20] [21]~[30]     pageCount=14--> 
+          {% if endPage < pageCount %}
+            <a href="blogselect.do?page={{ startPage|add:10 }}">[다음]</a>
+          {% endif %}
+      </td>
+    </tr>
+
+    <tr align="center">
+      <td colspan="5">  
+        <form name="searchform" action="blogselect.do">
+					<select name=keyfield>
+						<option value="">----- 검색조건 ----- </option>
+						<option value="name">이름</option>
+						<option value="title">제목</option>
+					</select>
+					<input type="text" name="keyword">
+					<input type="submit" value="검색">
+			</form>
+      </td>
+    </tr>
+
+  </table>
+
+  <p></p>
+  <button type='button' onclick="location.href='/'" > index </button> 
+  <button type='button' onclick="location.href='blogselect.do'"> blog출력 </button>
+  <button type='button' onclick="location.href='blogwrite.do'"> blog등록 </button>                    
+	<button type='button' onclick="location.href='blogtest.do'"> test </button>   
+
+</body>
+</html>

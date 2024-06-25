@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> [ blogwrite.html ] </title> 
+	<style type="text/css">
+	 * {font-size: 12pt; }
+	  body {
+		  padding: 80px 40px;
+	  }
+	  div{
+      margin:auto;
+      text-align:center;
+      
+    }
+	</style>
+  {% load bootstrap4 %}
+	{% bootstrap_css %}
+	{% bootstrap_javascript %}
+</head> 
+
+<body>
+   <!-- blog어플연결  blogedit.html주석  -->
+   <div class="container">
+        <form action="blogeditsave.do" method="post">
+          {% csrf_token %}
+          {% for i in result %}
+
+          <div class="row">
+            <div class="col-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">코드</span>
+                </div>
+                <input type="text" class="form-control"  name="code" value="{{ i.code }}" readonly>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">이름</span>
+                </div>
+                <input type="text" class="form-control" placeholder="name" name="name" value="{{ i.name }}">
+              </div>
+            </div>
+          </div>
+      
+          <div class="row">
+            <div class="col-6">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">제목</span>
+                </div>
+                <input type="text" class="form-control" placeholder="title" name="title" value="{{ i.title }}">
+              </div>
+            </div>
+          </div>
+
+          {% endfor %}
+                  
+          <div class="row">
+            <div class="col-8">
+              <button type="button" onclick="location.href='blogselect.do'" class="btn btn-secondary">리스트</button>
+              <input type="submit" value="저장" class="btn btn-secondary">
+              <input type="reset" value="입력취소" class="btn btn-secondary">       
+            </div> 
+          </div>                
+            
+        </form>
+	</div>
+	
+</body>
+</html>

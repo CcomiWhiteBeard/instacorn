@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Document</title>
+     <link rel="shortcut icon" href="/image/logo.jpeg" type="image/x-icon">
+     <script src="https://kit.fontawesome.com/b06a377e67.js" crossorigin="anonymous"></script>
+     <link rel="stylesheet" href="/cssfiles/home.css">
+     <link rel="stylesheet" href="/cssfiles/responsive.css">
+     <link rel="stylesheet" href="/cssfiles/navbarrespon.css">
+</head>
+
+<body>
+     <div id="mainbox">
+          <div id="navbar">
+               <h1>Instagram</h1>
+               <h2><i class="fa-brands fa-instagram"></i></h2>
+               <ul>
+                    <li><a href="/home.html"><i class="fa-solid fa-house"></i><span>홈</span> </a></li>
+                    <li id="fa-magnifying-glass"><a href="#"><i
+                                   class="fa-solid fa-magnifying-glass"></i><span>검색</span> </a></li>
+                    <li><a href="/explore.html"><i class="fa-solid fa-compass"></i><span>탐색 탭</span> </a></li>
+                    <li><a href="#"><i class="fa-solid fa-clapperboard"></i><span>릴스</span> </a></li>
+                    <li><a href="#"><i class="fa-brands fa-facebook-messenger"></i><span>메시지</span></a></li>
+                    <li id="fa-heart"><a href="#"><i class="fa-regular fa-heart"></i><span>알림</span></a></li>
+                    <li><a href="#"><i class="fa-regular fa-square-plus"></i><span>만들기</span></a></li>
+                    <li id="fa-instagram"><a href="/myprofile.html"><i
+                                   class="fa-brands fa-instagram"></i><span>프로필</span></a></li>
+               </ul>
+               <div id="nav2">
+                    <ul id="nav2ul">
+                         <ol><a href="#">설정<i class="fa-solid fa-gear"></i></a></ol>
+                         <ol><a href="#">저장됨<i class="fa-regular fa-bookmark"></i></a></ol>
+                         <ol><a href="#" onclick="theme()">모드 전환<i class="fa-solid fa-moon"></i></a></ol>
+                         <ol><a href="#">내 활동<i class="fa-regular fa-clock"></i></a></ol>
+                         <ol><a href="#">문제 신고<i class="fa-solid fa-bug"></i></a></ol>
+                         <ol><a href="#">계정 전환</a></ol>
+                         <ol><a href="#">로그아웃</a></ol>
+                    </ul>
+                    <li><a href="#" onclick="menutoggle()"><i class="fa-solid fa-bars"></i><span>더 보기</span></a></li>
+               </div>
+
+          </div>
+          <hr>
+          <div id="main">
+               <div id="story">
+                    <div class="story">
+                         <img src="/image/dp1.jpeg" alt="">
+                         <p>_Thor</p>
+                    </div>
+                    <div class="story">
+                         <img src="/image/dp2.jpeg" alt="">
+                         <p>joe__</p>
+                    </div>
+                    <div class="story">
+                         <img src="/image/dp3.jpeg" alt="">
+                         <p>nick_</p>
+                    </div>
+                    <div class="story">
+                         <img src="/image/dp4.jpeg" alt="">
+                         <p>ankush</p>
+                    </div>
+                    <div class="story">
+                         <img src="/image/dp5.jpeg" alt="">
+                         <p>venu</p>
+                    </div>
+                    <div class="story">
+                         <img src="/image/dp6.jpeg" alt="">
+                         <p>kapil</p>
+                    </div>
+               </div>
+               <div id="cards">
+                    <div class="card">
+                         <div class="card-heading">
+                              <img src="/image/dp1.jpeg" alt="">
+                              <div class="cardusername">
+                                   <h2>username1</h2>
+                                   <h3>place....</h3>
+                              </div>
+                              <div class="card-heading-option">
+                                   <h1 onclick="moreoptionincard()">...</h1>
+                              </div>
+                         </div>
+                         <div id="moreopt">
+                              <div class="moreopt">
+                                   <ul><a href="#">Report</a></ul>
+                                   <hr>
+                                   <ul><a href="#">Unfollow</a></ul>
+                                   <hr>
+                                   <ul><a href="#">Add to Favorites</a></ul>
+                                   <hr>
+                                   <ul><a href="#">Go to post</a></ul>
+                                   <hr>
+                                   <ul><a href="#">Share to...</a></ul>
+                                   <hr>
+                                   <ul><a href="#">Copy Link</a></ul>
+                                   <hr>
+                                   <ul><a href="#">Embed</a></ul>
+                                   <hr>
+                                   <ul><a href="#">About this account</a></ul>
+                                   <hr>
+                                   <ul onclick="cancelmoreopt()"><a href="#">Cancel</a></ul>
+                              </div>
+                         </div>
+
+                         <div class="card-img">
+                              <img src="image/post5.jpg" alt="">
+                         </div>
+
+                         <div class="card-likes">
+                              <i onclick="likes()" class="fa-regular fa-heart"></i>
+                              <i class="fa-regular fa-comment"></i>
+                              <i class="fa-solid fa-share"></i>
+                              <i id="bookmark" class="fa-regular fa-bookmark"></i>
+                         </div>
+
+                         <div class="card-footer">
+                              <span>username님 외 <button id="postlikes"></button>x명이 좋아합니다. &nbsp;</span>
+                              <div><input type="text" name="comment" id="comment" placeholder="댓글 달기..."></div>
+                         </div>
+                    </div>
+                    <!-- ------------------------------------moreuser------------------------------------ -->
+
+                    <div class="card">
+                         <div class="card-heading">
+                              <img src="/image/dp1.jpeg" alt="">
+                              <div class="cardusername">
+                                   <h2>username1</h2>
+                                   <h3>place....</h3>
+                              </div>
+                              <div class="card-heading-option">
+                                   <h1 onclick="moreoptionincard()">...</h1>
+                              </div>
+                         </div>
+
+                         <div class="card-img">
+                              <img src="image/post1.jpg" alt="">
+                         </div>
+
+                         <div class="card-likes">
+                              <i  class="fa-regular fa-heart" onclick="likes()"></i>
+                              <i class="fa-regular fa-comment"></i>
+                              <i class="fa-solid fa-share"></i>
+                              <i id="bookmark" class="fa-regular fa-bookmark"></i>
+                         </div>
+
+                         <div class="card-footer">
+                              <span>liked by username and <button id="postlikes"></button>others &nbsp;</span>
+                              <div><input type="text" name="comment" id="comment" placeholder="댓글 달기..."></div>
+                         </div>
+                    </div>
+                    <!-- ------------------------------------moreuser------------------------------------ -->
+
+                    <div class="card">
+                         <div class="card-heading">
+                              <img src="/image/dp1.jpeg" alt="">
+                              <div class="cardusername">
+                                   <h2>username1</h2>
+                                   <h3>place....</h3>
+                              </div>
+                              <div class="card-heading-option">
+                                   <h1 onclick="moreoptionincard()">...</h1>
+                              </div>
+                         </div>
+
+                         <div class="card-img">
+                              <img src="image/post2.jpg" alt="">
+                         </div>
+
+                         <div class="card-likes">
+                              <i onclick="like()" class="fa-regular fa-heart"></i>
+                              <i class="fa-regular fa-comment"></i>
+                              <i class="fa-solid fa-share"></i>
+                              <i id="bookmark" class="fa-regular fa-bookmark"></i>
+                         </div>
+
+                         <div class="card-footer">
+                              <span>liked by username and <button id="postlikes"></button>others &nbsp;</span>
+                              <div><input type="text" name="comment" id="comment" placeholder="댓글 달기..."></div>
+                         </div>
+                    </div>
+                    <!-- ------------------------------------moreuser------------------------------------ -->
+
+                    <div class="card">
+                         <div class="card-heading">
+                              <img src="/image/dp1.jpeg" alt="">
+                              <div class="cardusername">
+                                   <h2>username1</h2>
+                                   <h3>place....</h3>
+                              </div>
+                              <div class="card-heading-option">
+                                   <h1 onclick="moreoptionincard()">...</h1>
+                              </div>
+                         </div>
+
+                         <div class="card-img">
+                              <img src="image/post3.jpg" alt="">
+                         </div>
+
+                         <div class="card-likes">
+                              <i onclick="like()" class="fa-regular fa-heart"></i>
+                              <i class="fa-regular fa-comment"></i>
+                              <i class="fa-solid fa-share"></i>
+                              <i id="bookmark" class="fa-regular fa-bookmark"></i>
+                         </div>
+
+                         <div class="card-footer">
+                              <span>liked by username and <button id="postlikes"></button>others &nbsp;</span>
+                              <div><input type="text" name="comment" id="comment" placeholder="댓글 달기..."></div>
+                         </div>
+                    </div>
+                    <!-- ------------------------------------moreuser------------------------------------ -->
+                    <div class="card">
+                         <div class="card-heading">
+                              <img src="/image/dp1.jpeg" alt="">
+                              <div class="cardusername">
+                                   <h2>username1</h2>
+                                   <h3>place....</h3>
+                              </div>
+                              <div class="card-heading-option">
+                                   <h1 onclick="moreoptionincard()">...</h1>
+                              </div>
+                         </div>
+
+                         <div class="card-img">
+                              <img src="image/post4.jpg" alt="">
+                         </div>
+
+                         <div class="card-likes">
+                              <i class="fa-regular fa-heart" onclick="likes()"></i>
+                              <i class="fa-regular fa-comment"></i>
+                              <i class="fa-solid fa-share"></i>
+                              <i id="bookmark" class="fa-regular fa-bookmark"></i>
+                         </div>
+
+                         <div class="card-footer">
+                              <span>liked by username and <button id="postlikes"></button>others &nbsp;</span>
+                              <div><input type="text" name="comment" id="comment" placeholder="댓글 달기..."></div>
+                         </div>
+                    </div>
+                    <!-- ------------------------------------moreuser------------------------------------ -->
+
+
+               </div>
+          </div>
+          <div id="main2">
+               <div id="profile">
+                    <div class="pro">
+                         <a href="/myprofile.html"><img src="image/dp4.jpeg" alt=""></a>
+                         <div>
+                              <a href="/myprofile.html">
+                                   <h3>jadaun_sahab__</h3>
+                              </a>
+                              <p>vikas jadaun</p>
+                         </div>
+                    </div>
+                    <h4 onclick="switchopen()">전환</h4>
+               </div>
+               <div class="sugge">
+                    <p>회원님을 위한 추천</p>
+                    <p>모두 보기</p>
+               </div>
+               <!-- -------------------------------sugestions------------------------------- -->
+               <div id="suggestionsprofile">
+                    <div class="pro">
+                         <img src="image/dp3.jpeg" alt="">
+                         <div>
+                              <h3>_nrupuu_masai_</h3>
+                              <p>nrupul dev</p>
+                         </div>
+                    </div>
+                    <h4 onclick="followbtn()" id="followbtnname">팔로우</h4>
+               </div>
+               <div id="suggestionsprofile">
+                    <div class="pro">
+                         <img src="image/dp2.jpeg" alt="">
+                         <div>
+                              <h3>sagar_thapak_</h3>
+                              <p>Sagar Thapak</p>
+                         </div>
+                    </div>
+                    <h4 onclick="followbtn()">팔로우</h4>
+               </div>
+               <div id="suggestionsprofile">
+                    <div class="pro">
+                         <img src="image/dp1.jpeg" alt="">
+                         <div>
+                              <h3>Imperfect_soul</h3>
+                              <p>Sriramalavapati</p>
+                         </div>
+                    </div>
+                    <h4 onclick="followbtn()">팔로우</h4>
+               </div>
+               <div id="suggestionsprofile">
+                    <div class="pro">
+                         <img src="image/dp4.jpeg" alt="">
+                         <div>
+                              <h3>_vidhi_12</h3>
+                              <p>Vidhi sharma</p>
+                         </div>
+                    </div>
+                    <h4 onclick="followbtn()">팔로우</h4>
+               </div>
+               <div id="suggestionsprofile">
+                    <div class="pro">
+                         <img src="image/dp5.jpeg" alt="">
+                         <div>
+                              <h3>himu35</h3>
+                              <p>Himanshu umar</p>
+                         </div>
+                    </div>
+                    <h4 onclick="followbtn()">팔로우</h4>
+               </div>
+               <div id="profilefooter">
+                    <li><a href="#">소개 </a></li>
+                    <li><a href="#"> · 도움말 </a></li>
+                    <li><a href="#"> · 홍보 센터 </a></li>
+                    <li><a href="#"> · Api </a></li>
+                    <li><a href="#"> · 채용 정보 </a></li>
+                    <li><a href="#"> · 개인정보처리방침 ·  </a></li>
+               </div>
+               <div id="profilefooter">
+                    <li><a href="#"> 약관 </a></li>
+                    <li><a href="#"> · 위치 ·</a></li>
+                    <li><a href="#">언어</a></li>
+               </div>
+               <div id="profilefooter">
+                    <ul><a href="#">© 2024 INSTAGRAM FROM META</a></ul>
+               </div>
+               <!-- -------------------------------sugestions------------------------------- -->
+          </div>
+     </div>
+     <!-- ------------------switch------------------->
+     <div id="switch">
+          <div class="switch">
+               <span onclick="switchremove()"><i class="fa-solid fa-x"></i></span>
+               <h1>Instagram</h1>
+               <div><input type="text" name="" id="use" placeholder="phone number, username or email"></div>
+               <div><input type="text" name="" id="pas" placeholder="Paasword"></div>
+               <div><input type="checkbox" name="" id="checkbox">Save Login Info</div>
+               <button class="btnswitchlogin">Log in</button>
+               <p><a href="#"></a>Forgot Paasword?</p>
+
+          </div>
+     </div>
+     <!-- ------------------switch------------------->
+
+
+</body>
+<script src="/jsfiles/home.js"></script>
+
+</html>
