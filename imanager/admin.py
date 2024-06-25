@@ -79,7 +79,7 @@ class InstaMemberSingoAdmin(admin.ModelAdmin):
 #전체 게시물
 @admin.register(InstaBoard)
 class InstaBoardAdmin(admin.ModelAdmin):
-    list_display = ('b_code', 'b_content', 'b_photo', 'b_no', 'b_date', 'b_active')
+    list_display = ('b_code', 'b_content', 'b_photo', 'b_no', 'b_active')
     list_editable = ('b_active',)
     search_fields = ('b_content', 'b_code', 'b_date', 'b_no',)
     readonly_fields = ('b_code', 'b_content', 'b_photo', 'b_no', 'b_date')
@@ -90,6 +90,8 @@ class InstaBoardAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return True
+    
+    
 
 
 #신고된 게시물
@@ -108,7 +110,7 @@ class InstaBoardSingoAdmin(admin.ModelAdmin):
     def b_active_status(self, obj):
         return obj.bs_code.b_active
 
-    b_active_status.short_description = '게시물 상태'
+    #b_active_status.short_description = '게시물 상태'
 
     def set_inactive(self, request, queryset):
         updated_count = 0

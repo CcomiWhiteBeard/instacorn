@@ -406,6 +406,12 @@
                });
                // $('#img_form').submit();
           }
+
+          document.addEventListener('DOMContentLoaded', (event) => {
+            document.getElementById('btn_editProfile').addEventListener('click', function() {
+                window.location.href = '/insmember_modify.do';
+            });
+          });
      </script>
 </head>
 <body>

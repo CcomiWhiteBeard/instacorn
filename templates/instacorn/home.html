@@ -148,7 +148,10 @@
                     {% for item in result_board %}
                     <div class="card" {% if item.b_active == 0 %} style="display: none;" {% endif %}>
                          <div class="card-heading{{item.b_code}}">
-                              <a href="/myprofile.do/?b_no={{item.b_no}}"><img src="/static/images/{{item.user_img}}"></a>
+                              <a href="/myprofile.do/?b_no={{ item.b_no }}">
+                                   <img src="{% if item.user_img %}/static/images/{{ item.user_img }}{% else %}/static/images/profile02.png{% endif %}">
+                              </a>
+                              <!-- <a href="/myprofile.do/?b_no={{item.b_no}}"><img src="/static/images/{{item.user_img}}"></a> -->
                               <div class="cardusername">
                                    <h2>{{item.user_id}}</h2>
                                    <h3>place....</h3>
