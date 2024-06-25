@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> [ blogwrite.html ] </title> 
+	<style type="text/css">
+	  *{font-size: 12pt; }
+	  b{color:green; font-weight: bold;}
+	</style>
+</head> 
+<body>
+  <!-- blog어플  blogupdate.html  -->
+
+  <div>
+   <h2> blogupdate.html 글수정 </h2>
+
+    <form action="blogupdatesave.do" method="post">
+      {% csrf_token %} <!--Cross-Site Request Forgery 사이트 간 요청 위조-->
+      코드: <input type="text" name="code" value="{{dcode}}"  readonly>    <br>
+      이름: <input type="text" name="name" value="{{dname}}">    <br>
+      제목: <input type="text" name="title" value="{{dtitle}}">   <br>
+
+      <input type="submit" value="submit수정">
+      <!-- <input type="reset" value="reset"> -->
+      <button type='button' onclick="location.href='/'">index</button>
+      <button type='button' onclick="location.href='blogselect.do'"> 전체출력 </button>
+      <button type='button' onclick="location.href='blogwrite.do'"> 등록 </button>
+    </form>
+   </div>
+</body>
+</html>

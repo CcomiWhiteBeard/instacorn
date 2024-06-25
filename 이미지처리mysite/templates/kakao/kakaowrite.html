@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> [ kakaowrite.html ] </title> 
+	<style type="text/css">
+	  *{font-size: 12pt; }
+	  b{color:green; font-weight: bold;}
+	  div{text-align:center;}
+	</style>
+</head> 
+<body>
+   <!-- kakao어플  kakaowrite.html  -->
+   
+   <div> 
+    <h2>  kakaowrite.html 글쓰기 복사본 </h2>
+
+      <form   action=""   method="post"  >   
+        {% csrf_token %}   <!--Cross-Site Request Forgery 사이트 간 요청 위조 -->
+        코드: <input type="text" name="code" > <br>
+        이름: <input type="text" name="name" value="kim"> <br>
+        제목: <input type="text" name="title" value="book"> <br>
+   
+        <input  type="submit" value="submit저장" > 
+        <button type='button' onclick="location.href='/'" > index </button> 
+        <button type='button' onclick=""> kakao출력 </button>
+        <button type='button' onclick=""> kakao등록 </button>  
+   </div>
+</form>                       
+	
+</body>
+</html>
