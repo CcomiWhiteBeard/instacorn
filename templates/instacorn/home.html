@@ -149,12 +149,12 @@
                     <div class="card" {% if item.b_active == 0 %} style="display: none;" {% endif %}>
                          <div class="card-heading{{item.b_code}}">
                               <a href="/myprofile.do/?b_no={{ item.b_no }}">
-                                   <img src="{% if item.user_img %}/static/images/{{ item.user_img }}{% else %}/static/images/profile02.png{% endif %}">
+                                   <img src="/static/images/{{ item.user_img }}">
                               </a>
                               <!-- <a href="/myprofile.do/?b_no={{item.b_no}}"><img src="/static/images/{{item.user_img}}"></a> -->
                               <div class="cardusername">
                                    <h2>{{item.user_id}}</h2>
-                                   <h3>place....</h3>
+                                   <!--<h3>place....</h3>-->
                               </div>
                               <div class="head-option">
                                    <h1 onclick="showMenu('{{item.b_code}}')">...</h1>
@@ -175,13 +175,15 @@
                          <div class="card-likes">
                               <i onclick="likes()" class="fa-regular fa-heart"></i>
                               <i class="fa-regular fa-comment"></i>
-                              <i class="fa-solid fa-share"></i>
+                              <i class="fa-solid fa-share"></i> &emsp;&emsp;&emsp;
                               <i id="bookmark" class="fa-regular fa-bookmark"></i>
                          </div>
 
                          <div class="card-footer">
+                              <!--
                               <span>{{item.user_id}}님 외 <button id="postlikes"></button>x명이 좋아합니다. &nbsp;</span>
                               <div><input type="text" name="comment" id="comment" placeholder="댓글 달기..."></div>
+                              -->
                          </div>
                     </div>
                     {% endfor %}

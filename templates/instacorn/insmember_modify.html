@@ -16,65 +16,60 @@
     <div class="container">
         <div class="row justify-content-center align-items-center">
             <div class="card">
-                <h4 class="card-header">{{ user.m_name }} 님의 정보수정</h4>
+                <h4 class="card-header">{{ m_id }} 님의 정보수정</h4>
                 <div class="row justify-content-center align-items-center">
                     <div class="card-body">
                         <div class="text-center">
                             <img class="profile_img" id="profile_img" src=""/>
                         </div>
                         <form class="mt-3" action="insmember_modify.do" method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
+                            {% csrf_token %}
+                            <input type="hidden" name="update_info" value="1">
                             <div class="form-group">
-                            이메일 : <input type="m_email" class="form-control" id="m_email" name="m_email" value="{{ m_email }}" readonly>
-                            </div>
-                            <div class="form-group">
-                            아이디 : <input type="text" class="form-control" id="m_id" name="m_id" value="{{ user.m_id }}">
+                                이메일 : <input type="email" class="form-control" id="m_email" name="m_email" value="{{ m_email }}" readonly>
                             </div>
                             <div class="form-group">
-                            이름 : <input type="text" class="form-control" id="m_name" name="m_name" value="{{ user.m_name }}">
+                                아이디 : <input type="text" class="form-control" id="m_id" name="m_id" value="{{ m_id }}">
                             </div>
-                            <div>
-                            비밀번호 변경 
-                                <p class="d-inline-flex gap-1">
-                                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                  변경
-                                </button>
-                              </p>
-                              <div class="collapse" id="collapseExample">
-                                    <form class="mt-3" action="inspwd_modify.do" method="POST" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                        <div class="form-group">
-                                        현재 비밀번호 : <input type="password" class="form-control" id="exist_m_pwd" name="exist_m_pwd" placeholder="현재 비밀번호를 입력하세요.">
-                                        </div>
-                                        <div class="form-group">
-                                        새 비밀번호 : <p id="error_msg1" style="display: none; color: red;">현재 비밀번호와 같은 비밀번호입니다.</p>
-                                            <input type="password" class="form-control" id="new_m_pwd" name="new_m_pwd" placeholder="변경할 비밀번호를 입력하세요.">
-                                        </div>
-                                        <div class="form-group">
-                                        새 비밀번호 확인 : <p id="error_msg2" style="display: none; color: red;">새 비밀번호와 일치하지 않습니다.</p>
-                                            <input type="password" class="form-control" id="check_user_pw" name="check_user_pw" placeholder="비밀번호를 한 번 더 입력해주세요.">
-                                        </div>
-                                        <button type="submit" class="btn btn-primary" id="modifyButton">변경하기</button>
-                                    </form>
-                              </div>
+                            <div class="form-group">
+                                이름 : <input type="text" class="form-control" id="m_name" name="m_name" value="{{ m_name }}">
                             </div>
-                            <button type="submit" class="btn btn-primary">수정하기</button>
+                            <button type="submit" class="btn btn-primary mt-3">수정하기</button>
+                        </form>
+
+                        <div class="mt-3">
+                            <h4>비밀번호 변경</h4>
+                            <form method="POST" action="inspwd_modify.do">
+                                {% csrf_token %}
+                                <input type="hidden" name="change_password" value="1">
+                                <div class="form-group">
+                                    현재 비밀번호 : <input type="password" class="form-control" id="exist_m_pwd" name="exist_m_pwd" placeholder="현재 비밀번호를 입력하세요.">
+                                </div>
+                                <div class="form-group">
+                                    새 비밀번호 : <input type="password" class="form-control" id="new_m_pwd" name="new_m_pwd" placeholder="변경할 비밀번호를 입력하세요.">
+                                </div>
+                                <div class="form-group">
+                                    새 비밀번호 확인 : <input type="password" class="form-control" id="check_m_pwd" name="check_m_pwd" placeholder="비밀번호를 한 번 더 입력해주세요.">
+                                </div>
+                                <button type="submit" class="btn btn-primary" id="modifyPasswordButton">변경하기</button>
+                            </form>
+                            {% if messages %}
+                                <div class="mt-3">
+                                    {% for message in messages %}
+                                        <p class="text-danger">{{ message }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            </div>      
+    
                         </form>
                     </div>
                 </div>
-
-                {% if messages %}
-                    <div>
-                        {% for message in messages %}
-                            {{ message.tags }}! {{ message.message }}
-                        {% endfor %}
-                    </div>
-                {% endif %}
             </div>
         </div>
     </div>
 </div>
-<script>
+<!-- <script>
     $(document).ready(function(){
         //새 비밀번호 - 현재 비밀번호와 같은 경우 에러 메시지 띄우기
         $('#exist_m_pwd, #new_m_pwd').change(function(){
@@ -92,17 +87,17 @@
         });
 
         //새 비밀번호 확인 - 새 비밀번호와 다른 경우 에러 메시지 띄우기
-        $('#new_m_pwd, #check_user_pw').change(function(){
+        $('#new_m_pwd, #check_m_pwd').change(function(){
             new_m_pwd = $('#new_m_pwd').val();
-            check_user_pw = $('#check_user_pw').val();
+            check_m_pwd = $('#check_m_pwd').val();
 
-            if(new_m_pwd != check_user_pw) {
+            if(new_m_pwd != check_m_pwd) {
                 $('#error_msg2').css('display', 'inline');
                 $('#error_msg2').show();
-                $('#check_user_pw').css('background-color', '#F6CECE');
+                $('#check_m_pwd').css('background-color', '#F6CECE');
             } else {
                 $('#error_msg2').hide();
-                $('#check_user_pw').css('background-color', '');
+                $('#check_m_pwd').css('background-color', '');
             }
         });
 
@@ -112,7 +107,7 @@
             new_m_pwd = $('#new_m_pwd').val();
             check_m_pwd = $('#check_m_pwd').val();
 
-            if($('#new_m_pwd').css('background-color') != 'rgb(255, 255, 255)' | $('#check_user_pw').css('background-color') != 'rgb(255, 255, 255)') {
+            if($('#new_m_pwd').css('background-color') != 'rgb(255, 255, 255)' | $('#check_m_pwd').css('background-color') != 'rgb(255, 255, 255)') {
                 alert("올바르지 않은 입력 값이 있습니다. 다시 입력해주세요.");
                 return false;
             }
@@ -122,5 +117,5 @@
             }
         });
     });
-</script>
+</script> -->
 {% endblock body %}

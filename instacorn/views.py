@@ -269,7 +269,7 @@ def editImage(request):
 
     return redirect('/myprofile.do/?b_no='+m_no)
 
-
+#검색탭
 def instaselect(request):
     print('instaselect(request): 검색결과 출력 !!!!!!!!!!!!!!!!!!!!!!!!!!!')
     dt = datetime.datetime.now()
@@ -336,47 +336,49 @@ def instahome(request):
     return render(request, 'instacorn/instahome.html')
 
 
-# rcode값 idx값 확인 완료
+# 상세페이지
 def insdetail(request):
+    m_no = request.session.get('m_no')
+    print('m_no', m_no)
+
     idx = request.GET.get('idx')
     print('idx =', idx)
-    msg = "select * from insta_board where b_code = " + idx
+    msg = "select b.*, m.* from insta_board b inner join insta_member m on b.b_no = m.m_no where b_code = %s"
     cursor = connection.cursor()
-    cursor.execute(msg)
+    cursor.execute(msg, [idx])
     rows = cursor.fetchall()
-    print(rows)
 
     result = []
     for data in rows:
-        row = {'b_code':data[0], 'b_content':data[1], 'b_photo':data[2], 'b_no':data[3], 'b_date':data[4], 'b_active':data[5]}
+        row = {'b_code':data[0], 'b_content':data[1], 'b_photo':data[2], 'b_no':data[3], 'b_date':data[4], 
+               'b_active':data[5], 'm_id': data[7], 'm_name': data[10], 'm_img': data[12]}
         result.append(row)
-        print(row)
 
-    rmsg = "select * from insta_reply where r_code = " + idx 
+    rmsg = "select r.*, m.* from insta_reply r inner join insta_member m on r.r_no = m.m_no where r_code = " + idx 
     cursor = connection.cursor()
     cursor.execute(rmsg)
-    rows = cursor.fetchall()
+    rows = cursor.fetchall() 
     connection.commit()
     connection.close()
 
     rresult = []
     for data in rows:
-        row = {'r_num':data[0], 'r_content':data[1], 'r_date':data[2], 'r_no':data[3], 'r_code':data[4]}
+        row = {'r_num':data[0], 'r_content':data[1], 'r_date':data[2], 'r_no':data[3], 'r_code':data[4],
+               'm_no':data[5], 'm_id': data[6], 'm_name': data[9], 'm_img': data[11]}
         rresult.append(row)
 
-
-    print('result :', result, '\nrresult :', rresult)
-    print()
-    return render(request, 'instacorn/insdetail.html', {'result':result, 'rresult':rresult, 'idx':idx, 'MEDIA_URL': settings.MEDIA_URL}) 
+    #print('result :', result, '\nrresult :', rresult)
+    #print()
+    return render(request, 'instacorn/insdetail.html', {'result':result, 'rresult':rresult, 'idx':idx, 'MEDIA_URL': settings.MEDIA_URL, 'm_no':m_no}) 
 
 # 게시물 삭제 완료
 def insdelete(request):
     print('insdelete(request) method : 삭제')
 
     idx = request.GET.get('idx')
-    print('idx =', idx)
+    #print('idx =', idx)
     msg = "delete from insta_board where b_code = " + idx
-    print(msg)
+    #print(msg)
     cursor = connection.cursor()
     cursor.execute(msg)
     connection.commit()
@@ -386,10 +388,10 @@ def insdelete(request):
 
 # 게시물 내용 수정
 def insupdate(request):
-    print('insupdate(request) method : 수정 화면 들어가기')
+    #print('insupdate(request) method : 수정 화면 들어가기')
 
     idx = request.GET.get('idx')
-    print('idx =', idx)
+    #print('idx =', idx)
     cursor = connection.cursor()
     msg = "select * from insta_board where b_code = " + idx
     cursor.execute(msg)
@@ -402,27 +404,27 @@ def insupdate(request):
     return render(request, 'instacorn/insupdate.html', {'idx':idx, 'b_content':b_content})
 
 def insupdatesave(request):
-    print('insupdatesave(request) method : 수정 완료')
+    #print('insupdatesave(request) method : 수정 완료')
 
     if request.method == 'GET':
         return render(request, 'instacorn/insupdatesave.html')
     elif request.method == 'POST':
         idx = request.POST.get('idx')
-        print('idx =', idx)
+        #print('idx =', idx)
         b_content = request.POST.get('b_content')
         cursor = connection.cursor()
         msg = f"update insta_board set b_content = '{b_content}' where b_code = " + idx
         cursor.execute(msg)
         connection.commit()
         connection.close()
-        print('코드 수정 완료 b_content =', b_content)
+        #print('코드 수정 완료 b_content =', b_content)
     
-    return HttpResponse('<script>window.close();</script>')
-    # return redirect('insdetail.do?idx='+idx)
+    # return HttpResponse('<script>window.close();</script>')
+    return redirect('insdetail.do?idx='+idx)
 
 
 def insreplyinsert(request):
-    print('ins어플 insreplyinsert(request) method : 댓글 등록')
+    #print('ins어플 insreplyinsert(request) method : 댓글 등록')
 
     if request.method == 'GET':
         return render(request, 'instacorn/insreplyinsert.html')
@@ -430,7 +432,7 @@ def insreplyinsert(request):
         r_content = request.POST.get('r_content')
         r_no = request.POST.get('r_no')
         r_code = request.POST.get('r_code')
-        print('r_no', r_no)
+        #print('r_no', r_no)
 
         cursor = connection.cursor()
         msg = f"insert into insta_reply (r_content, r_no, r_code) values('{r_content}', '{r_no}', '{r_code}')"
@@ -441,7 +443,7 @@ def insreplyinsert(request):
     return redirect('insdetail.do?idx=' + r_code)
 
 def insreplyupdate(request):
-    print('ins어플 insreplyupdate(request) method : 댓글 수정')
+    #print('ins어플 insreplyupdate(request) method : 댓글 수정')
 
     if request.method == 'GET':
         pass
@@ -455,19 +457,19 @@ def insreplyupdate(request):
         cursor.execute(msg)
         connection.commit()
         connection.close()
-        print(r_num, ': 댓글 수정 완료')
-        print('rcode확인', r_code)
+        #print(r_num, ': 댓글 수정 완료')
+        #print('rcode확인', r_code)
 
     return redirect('insdetail.do?idx=' + r_code)
 
 def insreplydelete(request):
-    print('ins어플 insreplydelete(request) method : 댓글 삭제')
+    #print('ins어플 insreplydelete(request) method : 댓글 삭제')
 
     idx = request.GET.get('idx')
-    print('idx =', idx)
+    #print('idx =', idx)
 
     ridx = request.GET.get('ridx')
-    print('ridx =', ridx)
+    #print('ridx =', ridx)
 
     msg = "delete from insta_reply where r_num = " + ridx
     cursor = connection.cursor()

@@ -10,6 +10,7 @@
      display: block;
      width: 50%;
 }
+
 #signup2 {
      margin: 2rem auto;
      display: block;
@@ -38,6 +39,7 @@
 #signupmain {
      display: block;
 }
+
 #signupchild {
      height: 700px;
      text-align: center;
@@ -61,7 +63,6 @@
      margin: 10px auto;
      padding: 10px 0;
      border: 1px solid rgb(226, 225, 225);
-     font-style: 17rem;
 }
 
 #signupchild3 h3 {

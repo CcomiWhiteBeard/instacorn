@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.db  import connection, DatabaseError
-from django.contrib import messages
+from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User
 from django.contrib.auth import update_session_auth_hash
 from django.core.mail import send_mail
@@ -54,7 +55,7 @@ def inslogin(request):
                 messages.error(request, '아이디나 비밀번호가 일치하지 않습니다')
                 return redirect('inslogin.do')
 
-            regemail, regpw, m_salt = data
+            m_email, regpw, m_salt = data
 
             # 디버깅을 위해 데이터 출력
             print(f"DB regpw: {regpw}")
@@ -70,7 +71,7 @@ def inslogin(request):
                 messages.error(request, '아이디나 비밀번호가 일치하지 않습니다')
                 return redirect('inslogin.do')
 
-            request.session['m_email'] = regemail
+            request.session['m_email'] = m_email
             return render(request, 'instacorn/main.html')
                 
         except Exception as e:
@@ -215,26 +216,46 @@ def insmember_modifysave(request):
 #비밀번호변경
 # @login_required
 def inspwd_modify(request):
+    # context={}
+    # if request.method == 'POST':
+    #     exist_m_pwd = request.POST.get('exist_m_pwd')
+    #     user = request.user
+    #     if check_password(exist_m_pwd,user.password):
+    #         new_m_pwd = request.POST.get('new_m_pwd')
+    #         check_m_pwd = request.POST.get('check_m_pwd')
+    #         if new_m_pwd == check_m_pwd:
+    #             user.set_password(new_m_pwd)
+    #             user.save()
+    #             auth.login(request,user)
+    #             messages.success(request, '비밀번호가 변경되었습니다.')
+    #         else:
+    #             context.update({'error:''새 비밀번호가 일치하지 않습니다.'})
+    #     else:
+    #         context.update({'error':"현재 비밀번호가 일치하지 않습니다."})
+    # return render(request, 'instacorn/main.html')
+        
     if request.method == 'POST':
-        exist_m_pwd = request.POST.get('exist_m_pwd', '')
-        new_m_pwd = request.POST.get('new_m_pwd', '')
-        check_m_pwd = request.POST.get('check_m_pwd', '')
+        exist_m_pwd = request.POST.get('exist_m_pwd')
+        new_m_pwd = request.POST.get('new_m_pwd')
+        check_m_pwd = request.POST.get('check_m_pwd')     
         print(f"exist_m_pwd: {exist_m_pwd}, new_m_pwd: {new_m_pwd}, check_m_pwd: {check_m_pwd}")
 
-        user = request.user
+    user = request.user
 
+    if user.is_authenticated:
         if user.check_password(exist_m_pwd):
             if new_m_pwd == check_m_pwd:
                 user.set_password(new_m_pwd)
                 user.save()
+                print('aaaaaaaa')
                 update_session_auth_hash(request, user)
                 messages.success(request, '비밀번호가 변경되었습니다.')
             else:
                 messages.error(request, '새 비밀번호가 일치하지 않습니다.')
         else:
             messages.error(request, '현재 비밀번호가 일치하지 않습니다.')
-        
-        return redirect('insmember_modify.do')
+    else:
+            messages.error(request, '로그인된 사용자가 아닙니다.')
 
     return render(request, 'instacorn/main.html')
     

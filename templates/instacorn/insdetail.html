@@ -47,12 +47,6 @@
           window.opener.location.reload();
         }
       }
-
-      // window.onload = function(){
-      //   if(){
-      //     window.location.reload();
-      //   }
-      // }
     </script>
     <style>
         .post-image{
@@ -69,7 +63,7 @@
 
         .post-container {
             margin: 0 auto;
-            max-width: 600px;
+            max-width: 1500px;
         }
 
         .post-header {
@@ -82,6 +76,11 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .user-info {
+          margin-left: 0px;
         }
 
         .post-comments {
@@ -111,42 +110,47 @@
   <form name="reply_form" method="post" action="insreplyinsert.do">
     {% csrf_token %}
     {% for i in result %}
+
     <div class="post-container">
         <div class="post-image">
           <img src="{% static 'images/' %}{{ i.b_photo }}" alt="Post Image">
-          <!-- <img src="{{ MEDIA_URL }}{{ i.b_photo }}" alt="Post Image">   -->
         </div>
         <div class="post-details">
             <div class="post-header">
-                <img src="{% static 'images/' %}{{ i.b_photo }}" alt="User Avatar" class="user-avatar"> <!-- 수정 필요 -->
+                <img src="{% static 'images/' %}{{ i.m_img }}" alt="User Avatar" class="user-avatar">
                 <div class="user-info">
-                    <span class="username">username</span>
+                    <span class="username"> {{ i.m_id }} </span>
                 </div>
                 <div align="right">
+                  
+                  {% if i.b_no == m_no %}                  
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <button type="button" onclick="openPopup('insupdate.do?idx={{idx}}')">수정</button>
-                  <!-- <button type="button" onclick="location.href='insupdate.do?idx={{idx}}'">수정</button> -->
                   <button type="button" onclick="location.href='insdelete.do?idx={{idx}}'">삭제</button>  
+                  {% endif %}
                 </div>
             </div>
             <div class="post-content">
-                <p>{{ i.b_content }}</p>
+                <p id="result">{{ i.b_content }}</p>
                 <p>{{ i.b_date | date:"Y.m.d" }}</p>
             </div>
             <div class="post-actions">
-              <!-- 좋아요 구현 -->
 
             </div>
             <div style="overflow: auto; height:150px; padding:10px;">
-            {% for i in rresult %}
+            {% for reply in rresult %}
               <div class="post-comments">
                 <div class="comment">
-                    <span class="comment-user">{{ result.0.b_no }} b_no값</span>
-                    <span class="comment-text">{{ i.r_content }}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <img src="{% static 'images/' %}{{ reply.m_img }}" alt="User Avatar" class="user-avatar">
+                    <span class="comment-user">{{ reply.m_id }} </span>
+                    <span class="comment-text">{{ reply.r_content }}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="comment-actions">
-                        <button type="button" onclick="re_edit('{{ i.r_num }}', '{{ i.r_content }}', '{{ i.r_code }}')">수정</button>
-                        <button type="button" onclick="location.href='insreplydelete.do?ridx={{ i.r_num }}&idx={{ i.r_code }}'">삭제</button>
+                      <button type="button" onclick="re_edit('{{ reply.r_num }}', '{{ reply.r_content }}', '{{ reply.r_code }}')" {% if reply.r_no != m_no %}style="display: none;"{% endif %}>수정</button>
+                      
+                      {% if reply.r_no == m_no or i.b_no == m_no %}
+                      <button type="button" onclick="location.href='insreplydelete.do?ridx={{ reply.r_num }}&idx={{ reply.r_code }}'">삭제</button>
+                      {% endif %}
                     </div>
                 </div>
             </div>
@@ -155,7 +159,7 @@
             <div class="add-comment">
                 <input type="text" name="r_content" placeholder="Add a comment...">
                 <!-- <button class="post-comment-button">Post</button> -->
-                <input type="hidden" name="r_no" value="1"> <!-- r_no값 나중에 value값 다시 주기 -->
+                <input type="hidden" name="r_no" value="{{m_no}}">
                 <input type="hidden" name="r_num" value="">
                 <input type="hidden" name="r_code" value="{{result.0.b_code}}">
                 <input type="button" id="bt_save" name="bt_save" value="등록" onclick="re_save()">
