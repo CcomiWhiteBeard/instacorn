@@ -22,11 +22,6 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-        path('inslogin.do', views.inslogin),
-        path('insjoin.do', views.insjoin),
-        path('inslogout.do', views.inslogout),
-        path('insmember_modify.do', views.insmember_modify),
-        path('inspwd_modify.do', views.inspwd_modify),
         
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

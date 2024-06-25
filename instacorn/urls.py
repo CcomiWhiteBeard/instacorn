@@ -22,39 +22,22 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
+    #테스트용 지워도 됨
     path('instest.do', views.instest) ,
-    #각자 파트 추가해서 입력
-    #메인페이지
-    path('home.do/', views.home),
     
-    #게시판 신고
-    path('board_singo.do/', views.board_singo),
+    #메인페이지
+
     
     #검색페이지
-    path('instaselect.do', views.instaselect),
+
 
     #상세페이지
-    path('insdetail.do', views.insdetail) ,
-    path('insdelete.do', views.insdelete) , 
-    path('insupdate.do', views.insupdate) ,
-    path('insupdatesave.do', views.insupdatesave) ,
+
 
     #마이페이지
-    path('myprofile.do/', views.myprofile),
-    
-    #팔로워 삭제
-    path('del_follower.do/', views.del_follower),
-    
-    #팔로잉 취소
-    path('del_following.do/', views.del_following),
-    
-    #팔로우
-    path('follow.do/', views.follow),
-    
+
+
     #댓글
-    path('insreplyinsert.do', views.insreplyinsert) ,
-    path('insreplydelete.do', views.insreplydelete) ,
-    path('insreplyupdate.do', views.insreplyupdate) ,
     
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
