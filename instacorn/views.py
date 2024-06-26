@@ -337,7 +337,7 @@ def editImage(request):
         print(f'받아온 값 : {fileImg}, {m_no}') 
 
         if fileImg:
-            fs = FileSystemStorage(location='media/images')
+            fs = FileSystemStorage(location='static/images')
             fs.save(fileImg.name, fileImg)
         cursor = connection.cursor()
         msg = f"update insta_member set m_img='{fileImg}' where m_no='{m_no}'"
