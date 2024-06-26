@@ -5,9 +5,7 @@
   
 {% endblock head %}
 
-{% block title %}
-    회원정보 수정 | instacorn
-{% endblock title %}
+
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 
@@ -15,7 +13,7 @@
 <div class="main">
     <div class="container">
         <div class="row justify-content-center align-items-center">
-            <div class="card">
+            <div class="card"  style="max-width: 50%; margin-top: 5%;">
                 <h4 class="card-header">{{ m_id }} 님의 정보수정</h4>
                 <div class="row justify-content-center align-items-center">
                     <div class="card-body">
@@ -25,32 +23,32 @@
                         <form class="mt-3" action="insmember_modify.do" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             <input type="hidden" name="update_info" value="1">
-                            <div class="form-group">
+                            <div class="form-group" style="margin-bottom: 10px;">
                                 이메일 : <input type="email" class="form-control" id="m_email" name="m_email" value="{{ m_email }}" readonly>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" style="margin-bottom: 10px;">
                                 아이디 : <input type="text" class="form-control" id="m_id" name="m_id" value="{{ m_id }}">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" style="margin-bottom: 10px;">
                                 이름 : <input type="text" class="form-control" id="m_name" name="m_name" value="{{ m_name }}">
                             </div>
                             <button type="submit" class="btn btn-primary mt-3">수정하기</button>
-                        </form>
+                        </form> <br>
 
                         <div class="mt-3">
                             <h4>비밀번호 변경</h4>
                             <form method="POST" action="inspwd_modify.do">
                                 {% csrf_token %}
                                 <input type="hidden" name="change_password" value="1">
-                                <div class="form-group">
+                                <div class="form-group" style="margin-bottom: 10px;">
                                     현재 비밀번호 : <input type="password" class="form-control" id="exist_m_pwd" name="exist_m_pwd" placeholder="현재 비밀번호를 입력하세요.">
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" style="margin-bottom: 10px;">
                                     새 비밀번호 : <input type="password" class="form-control" id="new_m_pwd" name="new_m_pwd" placeholder="변경할 비밀번호를 입력하세요.">
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" style="margin-bottom: 10px;">
                                     새 비밀번호 확인 : <input type="password" class="form-control" id="check_m_pwd" name="check_m_pwd" placeholder="비밀번호를 한 번 더 입력해주세요.">
-                                </div>
+                                </div> <br>
                                 <button type="submit" class="btn btn-primary" id="modifyPasswordButton">변경하기</button>
                             </form>
                             {% if messages %}

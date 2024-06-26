@@ -21,6 +21,7 @@
           .btn_following:hover{
                cursor: pointer;
           }
+
           /* 팔로워 팝업 */
           .popup_follower{
                width: 100%;
@@ -123,11 +124,11 @@
           .popup_following_cancel:hover{
                cursor: pointer;
           }
-
           html, body{
                overflow: auto;
                height: 100%;
           }
+
           /* 탭 변경 */
           .changeimage h5:hover{
                border-top: 1px solid var(--primary-color);
@@ -140,7 +141,6 @@
                gap: 8px;
                margin-bottom: 4rem;
           }
-
           [class*='imagechild'] img {
                object-fit: fill;
                margin: 2rem 0;
@@ -370,6 +370,7 @@
                $('#like_tab').css('border','none');
                $('#board_tab').css('color','black');
                $('#board_tab').css('border-top','1px solid black');
+
                $('.imagechild_like').hide();
                $('.imagechild').show();
           }//end
@@ -383,6 +384,7 @@
                $('.imagechild').hide();
                $('.imagechild_like').show();
           }
+
           function userInfo(){
                $('.popup_user').css('display', 'flex');
           }
@@ -407,14 +409,7 @@
                          $('#img_form').submit();
                     }
                });
-               // $('#img_form').submit();
           }
-
-          document.addEventListener('DOMContentLoaded', (event) => {
-            document.getElementById('btn_editProfile').addEventListener('click', function() {
-                window.location.href = '/insmember_modify.do';
-            });
-          });
      </script>
 </head>
 <body>
@@ -449,18 +444,18 @@
           <div id="main">
                <div id="mainchild">
                     <div class="profilechild">
-                         <form id="img_form" action="/editImage.do/" method="post" entype="multipart/form-data" style="display: none;">
+                         <form id="img_form" action="/editImage.do/" method="post" enctype="multipart/form-data" style="display: none;">
                               {% csrf_token %}
                               <input type="file" name="fileImg" id="fileImg">
                               <input type="text" name="m_no" value="{{result_profile.m_no}}">
                          </form>
                          {% if user_no == result_profile.m_no %}
                          <div class="profileimage" onclick="editImage()">
-                              <i class="fa-solid fa-camera"></i><img src="/static/images/{{result_profile.m_img}}" style="filter: brightness(60%);">
+                              <i class="fa-solid fa-camera"></i><img src="/media/images/{{result_profile.m_img}}" style="filter: brightness(60%);">
                          </div>
                          {% else %}
                          <div class="profileimage">
-                              <img src="/static/images/{{result_profile.m_img}}">
+                              <img src="/media/images/{{result_profile.m_img}}">
                          </div>
                          {% endif %}
                          <div class="profiledetails">
@@ -506,18 +501,18 @@
                     <!-- 본인 게시물 -->
                     <div class="imagechild">
                          {% for item in result_board %}
-                         <img src="/static/images/{{item.b_photo}}" {% if item.b_active == 0 or item.b_singo_cnt != 0 %} style="filter: blur(10px);" {% endif %}>
+                         <img src="/media/images/{{item.b_photo}}" {% if item.b_active == 0 or item.b_singo_cnt != 0 %} style="filter: blur(10px);" {% endif %}>
                          {% endfor %}
                     </div>
                     <!-- 좋아요 누른 게시물 -->
                     <div class="imagechild_like" style="display: none;">
                          {% for item_like in result_like %}
-                         <img src="/static/images/{{item_like.b_photo}}" {% if item_like.b_active == 0 or item_like.b_singo_cnt != 0 %} style="filter: blur(10px);" {% endif %}>
+                         <img src="/media/images/{{item_like.b_photo}}" {% if item_like.b_active == 0 or item_like.b_singo_cnt != 0 %} style="filter: blur(10px);" {% endif %}>
                          {% endfor %}
                     </div>
                </div>
           </div>
-          <!--<div id="moreopt">
+          <!-- <div id="moreopt">
                <div class="moreopt">
                     <ul><a href="#">Change password</a></ul>
                     <hr>
@@ -541,8 +536,7 @@
                     <hr>
                     <ul onclick="cancelmoreopt()"><a href="#">Cancel</a></ul>
                </div>
-
-          </div>-->
+          </div> -->
      </div>
 
      <!-- 팔로워 팝업 -->
@@ -556,7 +550,7 @@
                     <ul>
                          {% for fo in result_follower %}
                          <li id="follower_{{fo.m_no}}">
-                              <a href="/myprofile.do/?b_no={{fo.m_no}}"><img src="/static/images/{{fo.m_img}}" alt=""></a>
+                              <a href="/myprofile.do/?b_no={{fo.m_no}}"><img src="/media/images/{{fo.m_img}}" alt=""></a>
                               <span>
                                    &nbsp;<span style="font-weight: bold;">{{fo.m_id}}</span><br>
                                    &nbsp;{{fo.m_name}}
@@ -580,7 +574,7 @@
                     <ul>
                          {% for fing in result_following %}
                          <li id="following_{{fing.m_no}}">
-                              <a href="/myprofile.do/?b_no={{fing.m_no}}"><img src="/static/images/{{fing.m_img}}" alt=""></a>
+                              <a href="/myprofile.do/?b_no={{fing.m_no}}"><img src="/media/images/{{fing.m_img}}" alt=""></a>
                               <span>
                                    &nbsp;<span style="font-weight: bold;">{{fing.m_id}}</span><br>
                                    &nbsp;{{fing.m_name}}

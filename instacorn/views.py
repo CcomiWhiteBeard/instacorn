@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.conf import settings
 import datetime
 
+
 def instest(request):
     context = {
         'boardTable': [
@@ -18,33 +19,115 @@ def instest(request):
     }
     return render(request, 'instacorn/main.html', context)
 
+# def home(request):
+#      # 세션에서 사용자 번호(m_no) 가져오기
+#     m_no = request.session.get('m_no')
+    
+#     cursor = connection.cursor()
+#     msg_profile = "SELECT m_id, m_name, m_img FROM insta_member WHERE m_no = %s"
+#     cursor.execute(msg_profile, [m_no])
+#     data_profile = cursor.fetchone()
+#     #result_profile = {'m_id':data_profile[1],'m_name':data_profile[3],'m_img':data_profile[5],}
+#     result_profile = {'m_id': data_profile[0], 'm_name': data_profile[1], 'm_img': data_profile[2]}
+
+#     # insta_board 테이블에서 사용자 게시글 목록 조회
+#     msg_board = """select b.*, (select m_id from insta_member m where b.b_no = m.m_no), 
+#     (select m_img from insta_member m where b.b_no = m.m_no), 
+#     (select count(*) from insta_board_singo bs where b.b_code=bs.bs_code)
+#     from insta_board b order by b_date desc"""
+#     cursor.execute(msg_board)
+#     rows = cursor.fetchall()
+
+#     connection.close()
+    
+#     result_board = []
+#     for data in rows:
+#         row = {'b_code':data[0],'b_content':data[1],'b_photo':data[2],'b_no':data[3],'b_date':data[4],'b_active':data[5],'user_id':data[6],'user_img':data[7],'b_singo_cnt':data[8]}
+#         result_board.append(row)
+    
+#     msg_like = "select bo_code from insta_board_like where bo_no=%s"
+#     cursor.execute(msg_like, [m_no])
+#     rows_like = cursor.fetchall()
+
+#     result_like = []
+#     for data_like in rows_like:
+#         row = {'bo_code':data_like[0]}
+#         result_like.append(row)
+
+#     connection.close()
+#     return render(request, 'instacorn/home.html', {'result_profile':result_profile,'result_board':result_board})
+
+
 def home(request):
-     # 세션에서 사용자 번호(m_no) 가져오기
+    # 세션에서 사용자 번호(m_no) 가져오기
     m_no = request.session.get('m_no')
-    
+    if not m_no:
+        return redirect('inslogin')
+
     cursor = connection.cursor()
-    msg_profile = "SELECT m_id, m_name, m_img FROM insta_member WHERE m_no = %s"
-    cursor.execute(msg_profile, [m_no])
-    data_profile = cursor.fetchone()
-    #result_profile = {'m_id':data_profile[1],'m_name':data_profile[3],'m_img':data_profile[5],}
-    result_profile = {'m_id': data_profile[0], 'm_name': data_profile[1], 'm_img': data_profile[2]}
 
-    # insta_board 테이블에서 사용자 게시글 목록 조회
-    msg_board = """select b.*, (select m_id from insta_member m where b.b_no = m.m_no), 
-    (select m_img from insta_member m where b.b_no = m.m_no), 
-    (select count(*) from insta_board_singo bs where b.b_code=bs.bs_code)
-    from insta_board b order by b_date desc"""
-    cursor.execute(msg_board)
-    rows = cursor.fetchall()
+    try:
+        # 사용자 프로필 정보 조회
+        msg_profile = "SELECT m_id, m_name, m_img FROM insta_member WHERE m_no = %s"
+        cursor.execute(msg_profile, [m_no])
+        data_profile = cursor.fetchone()
+        if data_profile:
+            result_profile = {
+                'm_id': data_profile[0], 
+                'm_name': data_profile[1], 
+                'm_img': data_profile[2]
+            }
+        else:
+            result_profile = {'m_id': '', 'm_name': '', 'm_img': ''}
 
-    connection.close()
-    
-    result_board = []
-    for data in rows:
-        row = {'b_code':data[0],'b_content':data[1],'b_photo':data[2],'b_no':data[3],'b_date':data[4],'b_active':data[5],'user_id':data[6],'user_img':data[7],'b_singo_cnt':data[8]}
-        result_board.append(row)
-    
-    return render(request, 'instacorn/home.html', {'result_profile':result_profile,'result_board':result_board})
+        # 사용자 게시글 목록 조회
+        msg_board = """
+            SELECT b.*, 
+                   (SELECT m_id FROM insta_member m WHERE b.b_no = m.m_no), 
+                   (SELECT m_img FROM insta_member m WHERE b.b_no = m.m_no), 
+                   (SELECT COUNT(*) FROM insta_board_singo bs WHERE b.b_code = bs.bs_code)
+            FROM insta_board b 
+            ORDER BY b.b_date DESC
+        """
+        cursor.execute(msg_board)
+        rows = cursor.fetchall()
+
+        result_board = []
+        for data in rows:
+            row = {
+                'b_code': data[0], 
+                'b_content': data[1], 
+                'b_photo': data[2], 
+                'b_no': data[3], 
+                'b_date': data[4], 
+                'b_active': data[5], 
+                'user_id': data[6], 
+                'user_img': data[7], 
+                'b_singo_cnt': data[8]
+            }
+            result_board.append(row)
+
+        
+        msg_like = "SELECT bo_code FROM insta_board_like WHERE bo_no = %s"
+        cursor.execute(msg_like, [m_no])
+        rows_like = cursor.fetchall()
+
+        result_like = [{'bo_code': data_like[0]} for data_like in rows_like]
+
+    except Exception as e:
+        print('Error in home view:', str(e))
+        result_profile = {'m_id': '', 'm_name': '', 'm_img': ''}
+        result_board = []
+        result_like = []
+    finally:
+        cursor.close()
+        connection.close()
+
+    return render(request, 'instacorn/home.html', {
+        'result_profile': result_profile,
+        'result_board': result_board,
+        'result_like': result_like
+    })
 
 def board_singo(request):
     b_code = request.GET.get('b_code')
@@ -253,10 +336,11 @@ def user_singo(request):
 @csrf_exempt
 def editImage(request):
     if request.method=='POST':
-        fileImg = request.FILES['fileImg'] if 'fileImg' in request.FILES else None
+        # fileImg = request.FILES['fileImg'] if 'fileImg' in request.FILES else None
+        fileImg = request.FILES.get('fileImg')
         m_no = request.POST.get('m_no')
 
-        print(f'받아온 값 : {fileImg}, {m_no}')
+        print(f'받아온 값 : {fileImg}, {m_no}') 
 
         if fileImg:
             fs = FileSystemStorage(location='media/images')
@@ -268,6 +352,31 @@ def editImage(request):
         connection.close()
 
     return redirect('/myprofile.do/?b_no='+m_no)
+
+def like(request):
+    m_no = request.POST.get('m_no')
+    b_code = request.POST.get('b_code')
+
+    cursor = connection.cursor()
+    msg_insert = f"insert into insta_board_like values('{b_code}','{m_no}')"
+    cursor.execute(msg_insert)
+    connection.commit()
+    connection.close()
+
+    return HttpResponse()
+
+def del_like(request):
+    m_no = request.POST.get('m_no')
+    b_code = request.POST.get('b_code')
+
+    cursor = connection.cursor()
+    msg_del = f"delete from insta_board_like where bo_code='{b_code}' and bo_no='{m_no}'"
+    cursor.execute(msg_del)
+    connection.commit()
+    connection.close()
+
+    return HttpResponse()
+
 
 #검색탭
 def instaselect(request):

@@ -56,9 +56,9 @@ def inslogin(request):
             cursor.execute(msg, [m_email])
             data = cursor.fetchone()
             
-            # 아이디가 틀렸을 때
+            # 이메일이 틀렸을 때
             if not data:
-                messages.error(request, '아이디가 존재하지 않습니다')
+                messages.error(request, '이메일이 존재하지 않습니다')
                 return redirect('inslogin.do')
 
             m_no, m_email, regpw, m_salt, m_active = data           
