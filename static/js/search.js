@@ -14,14 +14,13 @@ $(document).ready(function() {
                         
                     });
 
-                    // <h2>username1</h2>
-                    // <h3>place....</h3>
+                    
                     $.each(data.justresult, function(index,item) {
                         $('#results').append(
-                            '<a href="blogselect.do">' +
+                            '<a href="/myprofile.do/?b_no='+item.m_no+'">' +
                                 '<div class="card-heading">' +
-                                    '<img class="profile" src="static/images/' + item.profileimg + '" alt="">' + 
-                                
+                                //'<img src="/static/images/img2.jpg" class="profile">' +
+                                    '<img src="/static/images/' + item.profileimg + '" class="profile">' + 
                                     '<div class="cardusername">' +
                                         '<p><b>' + item.id + '</b></p>' + 
                                         '<p class="item-name">' + item.name + '</p>' + 

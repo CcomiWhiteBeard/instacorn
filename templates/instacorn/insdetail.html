@@ -41,11 +41,23 @@
       }
 
       // 팝업 창 열기
-      function openPopup(url) {
-        var popupWindow = window.open(url, "popupWindow", "width=500, height=400, scrollbars=yes");
-        popupWindow.onunload = function(){
-          window.opener.location.reload();
+      // function openPopup(url) {
+      //   var popupWindow = window.open(url, "popupWindow", "width=500, height=400, scrollbars=yes");
+      //   popupWindow.onunload = function(){
+      //     window.opener.location.reload();
+      //   }
+      // }
+
+
+      // 게시물 삭제 확인
+      function confirmDelete(idx) {
+        if (confirm("정말 삭제하시겠습니까?")) {
+          location.href = 'insdelete.do?idx=' + idx;
         }
+      }
+
+      function openPopup(url) {
+          window.open(url, "popupWindow", "width=500, height=400, scrollbars=yes");
       }
     </script>
     <style>
@@ -113,7 +125,7 @@
 
     <div class="post-container">
         <div class="post-image">
-          <img src="{% static 'images/' %}{{ i.b_photo }}" alt="Post Image">
+          <img src="{% static 'images/' %}{{ i.b_photo }}" alt="Post Image" {% if b_singo_cnt != 0 %} style="filter: blur(10px);" {% endif %}>
         </div>
         <div class="post-details">
             <div class="post-header">
@@ -128,7 +140,8 @@
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <button type="button" onclick="openPopup('insupdate.do?idx={{idx}}')">수정</button>
-                  <button type="button" onclick="location.href='insdelete.do?idx={{idx}}'">삭제</button>  
+                  <!-- <button type="button" onclick="location.href='insdelete.do?idx={{idx}}'">삭제</button>   -->
+                  <button type="button" onclick="confirmDelete('{{ idx }}')">삭제</button> 
                   {% endif %}
                 </div>
             </div>

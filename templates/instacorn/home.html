@@ -5,7 +5,7 @@
      <meta charset="UTF-8">
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Document</title>
+     <title>Home</title>
      <link rel="shortcut icon" href="/image/logo.jpeg" type="image/x-icon">
      <script src="https://kit.fontawesome.com/b06a377e67.js" crossorigin="anonymous"></script>
      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -98,7 +98,6 @@
                var flag = confirm('신고하시겠습니까?');
                if(flag){
                     location.href="/board_singo.do/?b_code="+b_code;
-                    alert('신고되었습니다.');
                }
           }
           function like(m_no,b_code){
@@ -135,6 +134,16 @@
                })
           }
      </script>
+     {% if messages %}
+     {% for message in messages %}
+          {% if message.tags == 'success' %}
+          <script>alert('신고되었습니다.');</script>
+          {% endif %}
+          {% if message.tags == 'error' %}
+          <script>alert('이미 신고된 게시물입니다.');</script>
+          {% endif %}
+     {% endfor %}
+     {% endif %}
 </head>
 
 <body>
@@ -187,7 +196,7 @@
                <div id="cards">
                     <!--게시물 리스트 시작-->
                     {% for item in result_board %}
-                    <div class="card" {% if item.b_active == 0 %} style="display: none;" {% endif %}>
+                    <div class="card" {% if item.b_active == 0 or item.user_active == 0 %} style="display: none;" {% endif %}>
                          <div class="card-heading{{item.b_code}}" style="margin-bottom: 0px;">
                               <a href="/myprofile.do/?b_no={{ item.b_no }}">
                                    <img src="/static/images/{{ item.user_img }}">
@@ -209,7 +218,7 @@
                          </div>
                          <div class="card-img" style="margin-top: 0px;">
                               <a href="/insdetail.do?idx={{item.b_code}}">
-                              <img src="/static/images/{{item.b_photo}}"  {% if item.b_singo_cnt != 0 %} style="filter: blur(10px);" {% endif %} >
+                              <img src="/static/images/{{item.b_photo}}"  {% if item.b_singo_cnt != 0 %} style="filter: blur(15px);" {% endif %} >
                               </a>
                          </div>
 
@@ -301,7 +310,7 @@
                     </div>
                     <h4 onclick="followbtn()">팔로우</h4>
                </div>
-               <div id="profilefooter">
+               <!-- <div id="profilefooter">
                     <li><a href="#">소개 </a></li>
                     <li><a href="#"> · 도움말 </a></li>
                     <li><a href="#"> · 홍보 센터 </a></li>
@@ -313,7 +322,7 @@
                     <li><a href="#"> 약관 </a></li>
                     <li><a href="#"> · 위치 ·</a></li>
                     <li><a href="#">언어</a></li>
-               </div>
+               </div> -->
                <div id="profilefooter">
                     <ul><a href="#">© 2024 INSTACORN</a></ul>
                </div>

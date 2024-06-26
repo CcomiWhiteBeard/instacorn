@@ -100,33 +100,33 @@ function likes() {
 
 
 
-var cancelopt = document.getElementById("moreopt");
+// var cancelopt = document.getElementById("moreopt");
           
-cancelopt.style.display = "none"; 
+// cancelopt.style.display = "none"; 
 
-function cancelmoreopt(){
-  if (cancelopt.style.display == "none")
-  cancelopt.style.display = "block";
- else {
-   cancelopt.style.display = "none";
- }
-}
+// function cancelmoreopt(){
+//   if (cancelopt.style.display == "none")
+//   cancelopt.style.display = "block";
+//  else {
+//    cancelopt.style.display = "none";
+//  }
+// }
 
 
 
 // -----------------------moreopt--------------------------
 
-let followbtnchange=document.getElementById("followbtnname");
-let follow=0;
-function followbtn(){
-if(follow==0){
-  follow=1;
-  console.log(follow)
-  followbtnchange.innerText="Following";
-  followbtnchange.style.color="white";
-}
-else if(follow==1) {
-  follow=0;
-  followbtnchange.innerText="Follow";
-}
-}
+// let followbtnchange=document.getElementById("followbtnname");
+// let follow=0;
+// function followbtn(){
+// if(follow==0){
+//   follow=1;
+//   console.log(follow)
+//   followbtnchange.innerText="Following";
+//   followbtnchange.style.color="white";
+// }
+// else if(follow==1) {
+//   follow=0;
+//   followbtnchange.innerText="Follow";
+// }
+// }

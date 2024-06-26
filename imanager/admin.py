@@ -2,6 +2,13 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 from .models import InstaMemberSingo, InstaMember, InstaBoard, InstaBoardSingo
 
+
+
+from django.contrib.admin.actions import delete_selected as default_delete_selected
+# 기본 삭제 액션의 설명을 변경
+default_delete_selected.short_description = '선택된 항목들을 삭제합니다.'
+
+
 #계정 활성화 여부 필터
 class MActiveBooleanFilter(admin.SimpleListFilter):
     title = _('계정 활성화 상태')
@@ -44,6 +51,9 @@ class InstaMemberAdmin(admin.ModelAdmin):
     readonly_fields = ('m_no', 'm_id', 'm_pwd', 'm_salt', 'm_name', 'm_email', 'm_img', 'm_date')
     list_filter = (MActiveBooleanFilter,)
 
+    
+
+
 #신고회원(비활성 처리 후 신고리스트에서 삭제)
 @admin.register(InstaMemberSingo)
 class InstaMemberSingoAdmin(admin.ModelAdmin):
@@ -74,6 +84,7 @@ class InstaMemberSingoAdmin(admin.ModelAdmin):
         self.message_user(request, f'{updated_count}건이 계정 비활성 처리 되었습니다.')
 
     set_inactive.short_description = '선택된 계정들을 비활성 처리 합니다.'
+    
 
 
 #전체 게시물
@@ -92,7 +103,7 @@ class InstaBoardAdmin(admin.ModelAdmin):
         return True
     
     
-
+    
 
 #신고된 게시물
 @admin.register(InstaBoardSingo)
@@ -124,6 +135,7 @@ class InstaBoardSingoAdmin(admin.ModelAdmin):
         self.message_user(request, f'{updated_count}건이 게시물 숨김 처리 되었습니다.')
 
     set_inactive.short_description = '선택된 게시물들을 숨김 처리 합니다.'
+    
 
     
 

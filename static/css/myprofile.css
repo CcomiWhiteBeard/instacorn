@@ -6,9 +6,6 @@
 }
 
 :root {
-     /* --primary-color: #ffffff;
-     --secondry-color: #000000;
-     --third-color: #242323; */
      --primary-color: #000000;
      --secondry-color: #ffffff;
      --third-color: #242323;
@@ -61,6 +58,10 @@
      color: var(--primary-color);
 }
 
+#navbar ul li a img {
+     border-radius: 50%;
+     width: 25px;
+}
 
 /* --------------------------------------navbar------------------------------------------- */
 
@@ -137,6 +138,24 @@
      margin-right: 10px;
 }
 
+[class*="card-heading"] {
+     margin: 40px 0 5px 0;
+     width: 100%;
+     display: flex;
+}
+
+[class*="card-heading"] img {
+     width: 40px;
+     height: 40px;
+     border-radius: 50%;
+     margin: 1px 13px 1px 5px;
+}
+
+.cardusername {
+     width: 500px;
+     color: var(--primary-color);
+     display: block;
+}
 
 /* --------------------------------------nav2---------------------------------------- */
 

@@ -1,15 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
      <meta charset="UTF-8">
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>{{result_profile.m_id}}</title>
+
      <script src="https://kit.fontawesome.com/b06a377e67.js" crossorigin="anonymous"></script>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
      <link rel="stylesheet" href="/static/css/myprofile.css">
      <link rel="stylesheet" href="/static/css/navbarrespon.css">
      <link rel="stylesheet" href="/static/css/responsive.css">
+     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
      <style>
+          [class*="card-heading"] {
+               margin: 36px 0 16px 0;
+               width: 100%;
+               display: flex;
+          }
+          [class*="card-heading"] img {
+               width: 40px;
+               height: 40px;
+               border-radius: 50%;
+               margin: 1px 13px 1px 5px;
+          }
+          [class*="card-heading"]{
+               position: relative;
+          }
+          [class*="card_menu"]{
+               width: 200px;
+               height: 80px;
+               position: absolute;
+               right: 0px;
+               background-color: white;
+               z-index: 1;
+               display: flex;
+               align-items: center;
+               border-radius: 10px;
+               display: none;
+               top: 15px;
+          }
+          [class*="card_menu"] ul{
+               border-radius: 10px;
+          }
+          [class*="card_menu"] ul li{
+               list-style: none;
+               line-height: 40px;
+               height: 40px;
+               border: 1px solid rgb(167, 167, 167);
+               width: 199px;
+               text-align: center;
+               font-weight: bold;
+          }
+          [class*="card_menu"] ul li:hover{
+               background-color: rgb(228, 228, 228);
+               cursor: pointer;
+          }
+          .head-option h1{
+               display: flex;
+               justify-content: flex-end;
+               color: var(--primary-color);
+               cursor: pointer;
+          }
           ul li{
                list-style: none;
           }
@@ -297,6 +351,18 @@
           .profileimage:hover{
                cursor: pointer;
           }
+
+          button.s-button {border: 0cm; background-color: white;}
+          div.w3-sidebar { box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);}
+          input.w3-bar-item { border-radius: 12px; margin: auto;}
+          input[type="text"].w3-bar-item.w3-light-grey {     /* input인데 type속성이 text */
+            width: 360px; /* 너비 조정 */
+            height: 38px; /* 높이 조정 */
+            font-size: 14px; /* 폰트 크기 조정 */
+            /* 다른 원하는 스타일 속성 추가 */  
+          }
+          a {text-decoration-line: none;}
+          .item-name{color: gray;}
      </style>
      <script>
           function showFollower(){
@@ -416,31 +482,55 @@
             });
           });
      </script>
+     {% if messages %}
+     {% for message in messages %}
+          {% if message.tags == 'success' %}
+          <script>alert('신고되었습니다.');</script>
+          {% endif %}
+          {% if message.tags == 'error' %}
+          <script>alert('이미 신고된 유저입니다.');</script>
+          {% endif %}
+     {% endfor %}
+{% endif %}
 </head>
 <body>
+     <!-- Sidebar -->
+     <div  class="w3-sidebar w3-bar-block w3-animate-left" width="80px"  style="display:none; width:20%;"  id="mySidebar">
+          <button onclick="w3_close()" class="w3-bar-item w3-large"><i class="material-icons">close</i></button>
+          <h3 >  <b style="margin-left: 1em; ">검색</b> </h3> 
+
+          <p></p>
+          <input type="text" class=" w3-bar-item w3-light-grey" id="search-input"  placeholder="Search..">
+          <hr style=" background-color: gray;">
+          
+          <div id="results">
+
+          </div>
+     </div>
+
      <div id="mainbox">
           <div id="navbar">
-               <h1>Instagram</h1>
+               <h1>Instacorn</h1>
                <h2><i class="fa-brands fa-instagram"></i></h2>
                <ul>
                     <li><a href="/home.do/"><i class="fa-solid fa-house"></i><span>홈</span> </a></li>
-                    <li id="fa-magnifying-glass"><a href="#"><i class="fa-solid fa-magnifying-glass"></i><span>검색</span> </a></li>
-                    <li><a href="/explore.html"><i class="fa-solid fa-compass"></i><span>탐색 탭</span> </a></li>
-                    <li><a href="#"><i class="fa-solid fa-clapperboard"></i><span>릴스</span> </a></li>
+                    <li id="fa-magnifying-glass"><a href="#" onclick="w3_open()"><i class="fa-solid fa-magnifying-glass"></i><span>검색</span></a></li>
                     <li><a href="#"><i class="fa-brands fa-facebook-messenger"></i><span>메시지</span></a></li>
                     <li id="fa-heart"><a href="#"><i class="fa-regular fa-heart"></i><span>알림</span></a></li>
                     <li><a href="#"><i class="fa-regular fa-square-plus"></i><span>만들기</span></a></li>
-                    <li id="fa-instagram"><a href="/myprofile.do/?b_no=1"><i class="fa-brands fa-instagram"></i><span>프로필</span></a></li>
+                    <li id="fa-instagram"><a href="/myprofile.do/?b_no={{ request.session.m_no }}"><i class="fa-brands fa-instagram"></i><span>프로필</span></a></li>
                </ul>
                <div id="nav2">
                     <ul id="nav2ul">
+                         <form id="logout-form" action="{% url 'logout' %}" method="POST" style="display: none;">
+                              {% csrf_token %}
+                         </form>
                          <ol><a href="#">설정<i class="fa-solid fa-gear"></i></a></ol>
                          <ol><a href="#">저장됨<i class="fa-regular fa-bookmark"></i></a></ol>
                          <ol><a href="#" onclick="theme()">모드 전환<i class="fa-solid fa-moon"></i></a></ol>
                          <ol><a href="#">내 활동<i class="fa-regular fa-clock"></i></a></ol>
-                         <ol><a href="#">문제 신고<i class="fa-solid fa-bug"></i></a></ol>
-                         <ol><a href="#">계정 전환</a></ol>
-                         <ol><a href="#">로그아웃</a></ol>
+                         <ol><a href="#">문제 신고<i class="fa-solid fa-bug"></i></a></ol>                         
+                         <ol><a href="#" onclick="document.getElementById('logout-form').submit();">로그아웃</a></ol>
                     </ul>
                     <li><a href="#" onclick="menutoggle()"><i class="fa-solid fa-bars"></i><span>더 보기</span></a></li>
                </div>
@@ -449,7 +539,7 @@
           <div id="main">
                <div id="mainchild">
                     <div class="profilechild">
-                         <form id="img_form" action="/editImage.do/" method="post" entype="multipart/form-data" style="display: none;">
+                         <form id="img_form" action="/editImage.do/" method="post" enctype="multipart/form-data" style="display: none;">
                               {% csrf_token %}
                               <input type="file" name="fileImg" id="fileImg">
                               <input type="text" name="m_no" value="{{result_profile.m_no}}">
@@ -466,11 +556,11 @@
                          <div class="profiledetails">
                               <div class="profiledetailschild1">
                                    <h1>{{result_profile.m_id}}</h1>
-                                   {% if user_no != result_profile.m_no %}
+                                   {% if request.session.m_no != result_profile.m_no %}
                                         {% if followInfo == 0 %}
-                                        <input type="button" id="userFollow" onclick="location.href='/follow.do/?follower_no={{user_no}}&following_no={{result_profile.m_no}}'" value="팔로우">
+                                        <input type="button" id="userFollow" onclick="location.href='/follow.do/?follower_no={{request.session.m_no}}&following_no={{result_profile.m_no}}'" value="팔로우">
                                         {% else %}
-                                        <input type="button" id="userFollowing" onclick="location.href='/del_following.do/?follower_no={{user_no}}&following_no={{result_profile.m_no}}'" value="팔로잉">
+                                        <input type="button" id="userFollowing" onclick="location.href='/del_following.do/?follower_no={{request.session.m_no}}&following_no={{result_profile.m_no}}'" value="팔로잉">
                                         {% endif %}
                                    {% endif %}
                                    {% if user_no == result_profile.m_no %}
@@ -506,7 +596,9 @@
                     <!-- 본인 게시물 -->
                     <div class="imagechild">
                          {% for item in result_board %}
+                         <a href="/insdetail.do?idx={{item.b_code}}">
                          <img src="/static/images/{{item.b_photo}}" {% if item.b_active == 0 or item.b_singo_cnt != 0 %} style="filter: blur(10px);" {% endif %}>
+                         </a>
                          {% endfor %}
                     </div>
                     <!-- 좋아요 누른 게시물 -->
@@ -561,7 +653,9 @@
                                    &nbsp;<span style="font-weight: bold;">{{fo.m_id}}</span><br>
                                    &nbsp;{{fo.m_name}}
                               </span>
+                              {% if request.session.m_no == result_profile.m_no %}
                               <button onclick="del_follower('{{fo.m_no}}','{{fo.following_no}}')">삭제</button>
+                              {% endif %}
                          </li>
                          {% endfor %}
                     </ul>
@@ -585,12 +679,14 @@
                                    &nbsp;<span style="font-weight: bold;">{{fing.m_id}}</span><br>
                                    &nbsp;{{fing.m_name}}
                               </span>
+                              {% if request.session.m_no == result_profile.m_no %}
                               <span id="following_btn_{{fing.m_no}}">
                                    <button onclick="del_following('{{fing.follower_no}}','{{fing.m_no}}')">팔로잉</button>
                               </span>
                               <span id="follow_btn_{{fing.m_no}}" style="display: none;">
                                    <button onclick="follow('{{fing.follower_no}}','{{fing.m_no}}')">팔로우</button>
                               </span> 
+                              {% endif %}
                          </li>
                          {% endfor %}
                     </ul>
@@ -611,5 +707,6 @@
      </div>
 </body>
 <script src="/static/js/myprofile.js"></script>
+<script src="/static/js/search.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 </html>

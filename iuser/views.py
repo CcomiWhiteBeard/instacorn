@@ -190,7 +190,9 @@ def insmember_modify(request):
     return render(request, 'instacorn/insmember_modify.html')
 
 
+#회원정보 수정 저장
 def insmember_modifysave(request):
+    m_no = request.session.get('m_no')
     m_email = request.POST.get('m_email')
     m_id = request.POST.get('m_id')
     m_name = request.POST.get('m_name')
@@ -210,7 +212,9 @@ def insmember_modifysave(request):
                 print('수정완료')
         
         messages.success(request, '회원정보가 수정되었습니다.')
-        return render(request, 'instacorn/home.html')
+        #return render(request, 'instacorn/home.html')
+        request.session['m_no'] = m_no
+        return redirect('home.do')
     
     except Exception as e:
             print('error')

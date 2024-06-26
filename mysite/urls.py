@@ -27,7 +27,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('admin/logout/', auth_views.LogoutView.as_view(next_page=settings.LOGOUT_REDIRECT_URL), name='admin_logout'),
     path('', views.index, name='index') ,
-    path('', include('blog.urls')) ,
     path('', include('instacorn.urls')) ,
     path('', include('iuser.urls')) ,
     path('', include('ichat.urls')) , 

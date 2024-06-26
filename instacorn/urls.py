@@ -24,7 +24,7 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('instest.do', views.instest) ,
-    #각자 파트 추가해서 입력
+
     #메인페이지
     path('home.do/', views.home),
     
@@ -37,6 +37,8 @@ urlpatterns = [
     
     #검색페이지
     path('instaselect.do', views.instaselect),
+    path('home.do/instaselect.do', views.instaselect, name='instaselect'),
+    path('myprofile.do/instaselect.do', views.instaselect, name='instaselect'),
 
     #상세페이지
     path('insdetail.do', views.insdetail) ,
