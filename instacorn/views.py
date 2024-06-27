@@ -337,7 +337,7 @@ def editImage(request):
         print(f'받아온 값 : {fileImg}, {m_no}') 
 
         if fileImg:
-            fs = FileSystemStorage(location='static/images')
+            fs = FileSystemStorage(location='media/images')
             fs.save(fileImg.name, fileImg)
         cursor = connection.cursor()
         msg = f"update insta_member set m_img='{fileImg}' where m_no='{m_no}'"
@@ -594,4 +594,27 @@ def insreplydelete(request):
     connection.commit()
     connection.close()
 
-    #return redirect('insdetail.do?idx='+idx)
+    return redirect('insdetail.do?idx='+idx)
+
+# ----------------------------------업로드 부분----------------------------------
+def uploadsave(request):
+    # if request.method=='GET':
+    #     return render(request, 'home.do')
+    # elif request.method=='POST':
+    bcontent = request.POST.get('b_content')
+    bphoto = request.FILES.get('b_photo')
+    bno = request.POST.get('b_no')
+
+    print(f'넘어온 데이터: {bcontent}, {bphoto}, {bno}\n')
+
+    fs = FileSystemStorage(location='media/images')     ###이하 2줄 있어야 이미지 업로드 가능
+    fs.save(request.FILES.get('b_photo').name, request.FILES.get('b_photo'))
+
+    cursor = connection.cursor() 
+    msg = f"insert into insta_board(b_content, b_photo, b_no) values('{bcontent}', '{bphoto}', {bno})"
+    cursor.execute(msg)
+    connection.commit()    
+    connection.close()
+    print('데이터 테이블 저장성공? ')
+    return redirect('/home.do/') 
+

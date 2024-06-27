@@ -253,6 +253,8 @@
                border-radius: 10px;
                font-weight: bold;
                font-size: 15px;
+               padding: 0px;
+               margin: 0px;
           }
           #userInfo{
                margin-left: 15px;
@@ -350,6 +352,9 @@
           }
           .profileimage:hover{
                cursor: pointer;
+          }
+          hr{
+               margin: 0px;
           }
 
           button.s-button {border: 0cm; background-color: white;}
@@ -546,11 +551,11 @@
                          </form>
                          {% if user_no == result_profile.m_no %}
                          <div class="profileimage" onclick="editImage()">
-                              <i class="fa-solid fa-camera"></i><img src="/static/images/{{result_profile.m_img}}" style="filter: brightness(60%);">
+                              <i class="fa-solid fa-camera"></i><img src="/media/images/{{result_profile.m_img}}" style="filter: brightness(60%);">
                          </div>
                          {% else %}
                          <div class="profileimage">
-                              <img src="/static/images/{{result_profile.m_img}}">
+                              <img src="/media/images/{{result_profile.m_img}}">
                          </div>
                          {% endif %}
                          <div class="profiledetails">
@@ -597,14 +602,14 @@
                     <div class="imagechild">
                          {% for item in result_board %}
                          <a href="/insdetail.do?idx={{item.b_code}}">
-                         <img src="/static/images/{{item.b_photo}}" {% if item.b_active == 0 or item.b_singo_cnt != 0 %} style="filter: blur(10px);" {% endif %}>
+                         <img src="/media/images/{{item.b_photo}}" {% if item.b_active == 0 or item.b_singo_cnt != 0 %} style="filter: blur(10px);" {% endif %}>
                          </a>
                          {% endfor %}
                     </div>
                     <!-- 좋아요 누른 게시물 -->
                     <div class="imagechild_like" style="display: none;">
                          {% for item_like in result_like %}
-                         <img src="/static/images/{{item_like.b_photo}}" {% if item_like.b_active == 0 or item_like.b_singo_cnt != 0 %} style="filter: blur(10px);" {% endif %}>
+                         <img src="/media/images/{{item_like.b_photo}}" {% if item_like.b_active == 0 or item_like.b_singo_cnt != 0 %} style="filter: blur(10px);" {% endif %}>
                          {% endfor %}
                     </div>
                </div>
@@ -648,7 +653,7 @@
                     <ul>
                          {% for fo in result_follower %}
                          <li id="follower_{{fo.m_no}}">
-                              <a href="/myprofile.do/?b_no={{fo.m_no}}"><img src="/static/images/{{fo.m_img}}" alt=""></a>
+                              <a href="/myprofile.do/?b_no={{fo.m_no}}"><img src="/media/images/{{fo.m_img}}" alt=""></a>
                               <span>
                                    &nbsp;<span style="font-weight: bold;">{{fo.m_id}}</span><br>
                                    &nbsp;{{fo.m_name}}
@@ -674,7 +679,7 @@
                     <ul>
                          {% for fing in result_following %}
                          <li id="following_{{fing.m_no}}">
-                              <a href="/myprofile.do/?b_no={{fing.m_no}}"><img src="/static/images/{{fing.m_img}}" alt=""></a>
+                              <a href="/myprofile.do/?b_no={{fing.m_no}}"><img src="/media/images/{{fing.m_img}}" alt=""></a>
                               <span>
                                    &nbsp;<span style="font-weight: bold;">{{fing.m_id}}</span><br>
                                    &nbsp;{{fing.m_name}}

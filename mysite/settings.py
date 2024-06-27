@@ -39,11 +39,15 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "mysite",
-    "instacorn", "iuser", "ichat", "imanager",
+    "instacorn", "iuser", "imanager",
+    'insta', 'corsheaders', 'rest_framework',
+    'channels',
     "django_bootstrap5"
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # CORS 추가
+    'django.middleware.common.CommonMiddleware',  # CORS 추가
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -53,12 +57,17 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+# CORS 추가
+CORS_ORIGIN_WHITELIST = [
+    'http://127.0.0.1:8000', 'http://localhost:3000',]
+CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = "mysite.urls"
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates'],
+        # "DIRS": [BASE_DIR / 'templates'],
+        "DIRS": [os.path.join(BASE_DIR, 'templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -140,3 +149,25 @@ MEDIA_ROOT=os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGOUT_REDIRECT_URL = '/'
+
+ASGI_APPLICATION = 'mysite.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
+
+# Email Settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'eunjeong474@gmail.com'
+EMAIL_HOST_PASSWORD = 'uvpj qaba kvji svec'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+HOSTNAME='127.0.0.1:8000'
+PROTOCOL = 'http' if DEBUG else 'https'

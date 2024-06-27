@@ -27,7 +27,10 @@ urlpatterns = [
 
     #메인페이지
     path('home.do/', views.home),
-    
+
+    #업로드
+    path('uploadsave.do/', views.uploadsave),
+
     #게시판 신고
     path('board_singo.do/', views.board_singo),
     

@@ -3,6 +3,7 @@
 
 <head>
      <meta charset="UTF-8">
+     <meta name="csrf_token" content="{{ csrf_token }}">
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>Home</title>
@@ -10,6 +11,7 @@
      <script src="https://kit.fontawesome.com/b06a377e67.js" crossorigin="anonymous"></script>
      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
      <link rel="stylesheet" href="/static/css/home.css">
+     <link rel="stylesheet" href="/static/css/modal.css">
      <link rel="stylesheet" href="/static/css/responsive.css">
      <link rel="stylesheet" href="/static/css/navbarrespon.css">
      <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -161,6 +163,8 @@
           </div>
      </div>
 
+
+
      <div id="mainbox">
           <div id="navbar">
                <h1>Instacorn</h1>
@@ -170,7 +174,8 @@
                     <li id="fa-magnifying-glass"><a href="#" onclick="w3_open()"><i class="fa-solid fa-magnifying-glass"></i><span>검색</span></a></li>  
                     <li><a href="#"><i class="fa-brands fa-facebook-messenger"></i><span>메시지</span></a></li>
                     <li id="fa-heart"><a href="#"><i class="fa-regular fa-heart"></i><span>알림</span></a></li>
-                    <li><a href="#"><i class="fa-regular fa-square-plus"></i><span>만들기</span></a></li>
+                    <!-- <li><a href="#"><i class="fa-regular fa-square-plus"></i><span>만들기</span></a></li> -->
+                    <li><a href="#"><i class="fa-regular fa-square-plus"></i><span id="add_feed" class="material-icons-outlined">만들기</span></a></li>
                     <li id="fa-instagram"><a href="/myprofile.do/?b_no={{ request.session.m_no }}"><i
                                    class="fa-brands fa-instagram"></i><span>프로필</span></a></li>
                </ul>
@@ -199,7 +204,7 @@
                     <div class="card" {% if item.b_active == 0 or item.user_active == 0 %} style="display: none;" {% endif %}>
                          <div class="card-heading{{item.b_code}}" style="margin-bottom: 0px;">
                               <a href="/myprofile.do/?b_no={{ item.b_no }}">
-                                   <img src="/static/images/{{ item.user_img }}">
+                                   <img src="/media/images/{{ item.user_img }}">
                               </a>
                               <!-- <a href="/myprofile.do/?b_no={{item.b_no}}"><img src="/static/images/{{item.user_img}}"></a> -->
                               <div class="cardusername">
@@ -218,7 +223,7 @@
                          </div>
                          <div class="card-img" style="margin-top: 0px;">
                               <a href="/insdetail.do?idx={{item.b_code}}">
-                              <img src="/static/images/{{item.b_photo}}"  {% if item.b_singo_cnt != 0 %} style="filter: blur(15px);" {% endif %} >
+                              <img src="/media/images/{{item.b_photo}}"  {% if item.b_singo_cnt != 0 %} style="filter: blur(15px);" {% endif %} >
                               </a>
                          </div>
 
@@ -245,7 +250,7 @@
           <div id="main2">
                <div id="profile">
                     <div class="pro">
-                         <a href="/myprofile.do/?b_no={{ request.session.m_no }}"><img src="/static/images/{{result_profile.m_img}}" alt=""></a>
+                         <a href="/myprofile.do/?b_no={{ request.session.m_no }}"><img src="/media/images/{{result_profile.m_img}}" alt=""></a>
                          <div>
                               <a href="/myprofile.do/?b_no={{ request.session.m_no }}">
                                    <h3>{{result_profile.m_id}}</h3>
@@ -343,8 +348,189 @@
           </div>
      </div>
      <!-- ------------------switch------------------->
+      
 
+     <!-- 업로드 구현 -->
+     <div id="modal_add_feed" class="modal_overlay">
+          <div id="modal_size" class="modal_window">
+               <div class="modal_title">
+                    <div class="modal_title_side"></div>
+                    <div> 새 게시물 </div>
+                    <div class="modal_title_side">
+                         <span id="close_modal" class="material-icons-outlined">
+                              close
+                         </span>
+                         <span id="next_modal" class="next_modal_display">
+                              next
+                         </span>
+                         <span id="submit_modal" class="submit_modal_display">
+                              share
+                         </span>
+                    </div>
+               </div>
+               <div class="modal_content">
+                    <div class="modal_image_upload">
+                         <!-- <div></div> -->
+                         <div class="img_file">
+                              <input type="file" name="b_photo" id="b_photo"  >
+                         </div>
+                         <!-- <div></div> -->
+                    </div>
+                    <div id="submit_form" class="submit_form">
 
+                         <form id="uploadForm" method="POST" action="/uploadsave.do/" enctype="multipart/form-data">
+                              {% csrf_token %}
+                                  <div class="modal_image_content">
+                                      <div id="input_image" class="modal_image_upload_content">
+                                        
+                                      </div>
+                                      <div class="modal_content_write">
+                                          <div class="feed_name">
+                                              <div class="profile_box">
+                                                  <img id="input_profile_image" class="profile_img" src="/static/images/{{result_profile.m_img}}">
+                                              </div>
+                                              <span id="input_user_id" class="feed_name_txt"> {{result_profile.m_id }} </span> 
+                                          </div>
+                                          <input id="input_b_no" type="hidden" name="b_no" value="{{ request.session.m_no }}"> 
+                                          <div style="height: 440px">
+                                              <textarea id="b_content" name="b_content" class="feed_content_textarea form-control col-sm-5" rows="10" placeholder="설명을 입력하세요..."></textarea>
+                                          </div>
+                                          <div style="width: 100%; text-align:center;">
+                                              <!-- <button id="button_write_feed" type="submit" class="btn btn-primary" style="width: 200px"> 공유하기</button> -->
+                                          </div>
+                                      </div>
+                                  </div> <!-- .modal_image_content END-->
+                              </form>
+                    </div>
+               </div>
+          </div>
+      </div>
+     <script>
+     
+          // 업로드관련 자바스크립트
+          // alert('여기는?')
+          const modal = document.getElementById("modal_add_feed");
+          const buttonAddFeed = document.getElementById("add_feed");
+          const buttonNextModal = document.getElementById("next_modal");
+          const buttonsubmitModal = document.getElementById("submit_modal");
+     
+          buttonAddFeed.addEventListener("click", e =>{
+               // modal.style.top = window.pageYOffset + 'px';   // 보고있던 화면에서 모달생성
+               modal.style.display= "flex";
+               document.documentElement.style.overflowY = "hidden"; // 'html' 요소
+               document.body.style.overflowY = "hidden";
+               // alert('스크롤 방지')
+     
+          });
+          
+          const buttonCloseModal = document.getElementById("close_modal");
+          buttonCloseModal.addEventListener("click", e =>{
+               modal.style.display = "none";
+               document.documentElement.style.overflowY = "Visible"; // 'html' 요소
+               document.body.style.overflowY = "visible"
+          })
+     
+          const img_button = document.getElementById("b_photo");
+          //사진 드래그후 close -> 다음으로 변경되고 모달이 20%정도 커지게 설정
+          // jquery 부분
+          $('.modal_image_upload')
+               .on("dragover", dragOver)
+               .on("dragleave", dragOver)
+               .on("drop", uploadFiles);
+     
+          function dragOver(e){
+               e.stopPropagation();
+               e.preventDefault();
+     
+               if (e.type=="dragover"){
+                    $(e.target).css({
+                         "background-color": "black",
+                         "outline-offset": "-20px"
+                    });
+               }else{
+                    $(e.target).css({
+                         "background-color": "white",
+                         "outline-offset": "-10px"
+                    })
+                    img_button.style.display = "none"
+               }
+          }   //dragOver 함수
+          
+          function uploadFiles(e){
+               e.stopPropagation();
+               e.preventDefault();
+               
+               e.dataTransfer = e.originalEvent.dataTransfer;
+               var files = e.dataTransfer.files;
+     
+               if (files.length > 1) {
+                    alert('하나의 파일만 올려주세요!');
+                    return;
+               }
+     
+               if (files[0].type.match(/image.*/)) {
+                    // alert('파일이름' + files[0].name)
+                    img_button.style.display = "none";
+                    // alert('파일버튼 제거 성공')
+                    $(e.target).css({
+                         "background-image": "url(" + window.URL.createObjectURL(files[0]) + ")",
+                         "outline": "none",
+                         "background-size": "100% 100%"
+                    });
+                    
+                    buttonCloseModal.style.display = "none";
+                    buttonNextModal.style.display = "flex";
+     
+               }else{
+                    alert('이미지가 아닙니다.');
+                    return;
+               }
+               upload(files[0])
+          }
+          const modal_size = document.getElementById("modal_size");
+          const submit_form = document.getElementById("submit_form");
+          buttonNextModal.addEventListener("click", e =>{
+               modal_size.style.width = "1025px";
+               buttonNextModal.style.display = "none";
+               buttonsubmitModal.style.display = "flex";
+               submit_form.style.display = "flex";
+          });
+     
+     //     bcontent = request.POST.get('b_content')
+     //     bphoto = request.FILES.get('b_photo')
+     //     bno = request.POST.get('b_no')
+     
+          function upload(file){
+               $(document).ready(function(){
+                    $('#submit_modal').on('click', function(){
+                         var csrftoken = document.querySelector("meta[name=csrf_token]").content
+                         var form = document.getElementById('uploadForm');
+                         var formData = new FormData(form);
+     
+                         // 폼 밖에 있는 데이터 추가
+                         var fileInput = file
+                         formData.append('b_photo', file);
+                    
+                         // alert(' b_content = ' + b_content + ' b_photo = ' + b_photo + ' b_no = ' + b_no)
+                         $.ajax({
+                              url: '/uploadsave.do/',
+                              type:'POST',
+                              data: formData,
+                              processData: false,
+                              contentType: false,
+                              headers: {"X-CSRFToken": csrftoken},
+                              success: function(data) {
+                              alert('업로드 성공')
+                              modal.style.display = "none";
+                              },
+                              error: function() {
+                                   alert('업로드 실패')
+                         }
+                         });
+                    });
+               });
+          }
+     </script>
 </body>
 <script src="/static/js/home.js"></script>
 <script src="/static/js/search.js"></script>

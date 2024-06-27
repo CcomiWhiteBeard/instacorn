@@ -19,6 +19,7 @@ from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
@@ -27,6 +28,9 @@ urlpatterns = [
         path('inslogout.do', views.inslogout),
         path('insmember_modify.do', views.insmember_modify),
         path('inspwd_modify.do', views.inspwd_modify),
+        
+        #비밀번호 찾기
+        path('inspwdreset.do', views.password_reset_request, ),
         
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

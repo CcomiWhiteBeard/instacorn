@@ -28,9 +28,20 @@ urlpatterns = [
     path('admin/logout/', auth_views.LogoutView.as_view(next_page=settings.LOGOUT_REDIRECT_URL), name='admin_logout'),
     path('', views.index, name='index') ,
     path('', include('instacorn.urls')) ,
-    path('', include('iuser.urls')) ,
-    path('', include('ichat.urls')) , 
+    path('', include('iuser.urls')) , 
     path('', include('imanager.urls')) , 
+    path('', include('insta.urls')),
+    #비밀번호 재설정
+    path('inspwdreset/done/',
+         auth_views.PasswordResetDoneView.as_view(template_name='instacorn/inspwdreset_done.html'),
+         name='inspwdreset_done'),
+    path('reset/<uidb64>/<token>/',
+         auth_views.PasswordResetConfirmView.as_view(template_name='instacorn/inspwdreset_confirm.html'),
+         name='inspwdreset_confirm'),
+    path('reset/done/',
+         auth_views.PasswordResetCompleteView.as_view(template_name='instacorn/inspwdreset_complete.html'),
+         name='password_reset_complete'),
+
 ] 
 # if settings.DEBUG:
 #     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

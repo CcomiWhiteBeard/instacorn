@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instagram Detail Page</title>
     <link rel="stylesheet" href="{% static 'css/styles_detail.css' %}">
+    
+    <script src="https://kit.fontawesome.com/b06a377e67.js" crossorigin="anonymous"></script>
+
     <script>
       //댓글수정관련 자바스크립트
       function re_edit(r_num, r_content, r_code){
@@ -75,7 +78,7 @@
 
         .post-container {
             margin: 0 auto;
-            max-width: 1500px;
+            max-width: 1300px;
         }
 
         .post-header {
@@ -115,6 +118,10 @@
         .comment-user {
               margin-right: 10px;
         }
+
+        a {          
+          color: inherit;          
+        }
     </style>
 </head>
 
@@ -125,11 +132,11 @@
 
     <div class="post-container">
         <div class="post-image">
-          <img src="{% static 'images/' %}{{ i.b_photo }}" alt="Post Image" {% if b_singo_cnt != 0 %} style="filter: blur(10px);" {% endif %}>
+          <img src="/media/images/{{ i.b_photo }}" alt="Post Image" {% if b_singo_cnt != 0 %} style="filter: blur(10px);" {% endif %}>
         </div>
         <div class="post-details">
             <div class="post-header">
-                <img src="{% static 'images/' %}{{ i.m_img }}" alt="User Avatar" class="user-avatar">
+                <img src="/media/images/{{ i.m_img }}" alt="User Avatar" class="user-avatar">
                 <div class="user-info">
                     <span class="username"> {{ i.m_id }} </span>
                 </div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
@@ -139,9 +146,14 @@
                   {% if i.b_no == m_no %}                  
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <button type="button" onclick="openPopup('insupdate.do?idx={{idx}}')">수정</button>
-                  <!-- <button type="button" onclick="location.href='insdelete.do?idx={{idx}}'">삭제</button>   -->
-                  <button type="button" onclick="confirmDelete('{{ idx }}')">삭제</button> 
+                  <!-- <button type="button" onclick="openPopup('insupdate.do?idx={{idx}}')">수정</button> -->
+                  <a href="javascript:void(0);" onclick="openPopup('insupdate.do?idx={{ idx }}')">
+                    <i class="fas fa-pencil-alt"></i> 
+                  </a> &nbsp;
+                  <!-- <button type="button" onclick="confirmDelete('{{ idx }}')">삭제</button>  -->
+                  <a href="javascript:void(0);" onclick="confirmDelete('{{ idx }}')">
+                    <i class="fas fa-times"></i>
+                  </a>
                   {% endif %}
                 </div>
             </div>
@@ -156,14 +168,24 @@
             {% for reply in rresult %}
               <div class="post-comments">
                 <div class="comment">
-                    <img src="{% static 'images/' %}{{ reply.m_img }}" alt="User Avatar" class="user-avatar">
+                    <img src="/media/images/{{ reply.m_img }}" alt="User Avatar" class="user-avatar">
                     <span class="comment-user">{{ reply.m_id }} </span>
                     <span class="comment-text">{{ reply.r_content }}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <div class="comment-actions">
-                      <button type="button" onclick="re_edit('{{ reply.r_num }}', '{{ reply.r_content }}', '{{ reply.r_code }}')" {% if reply.r_no != m_no %}style="display: none;"{% endif %}>수정</button>
+                      <!-- <button type="button" onclick="re_edit('{{ reply.r_num }}', '{{ reply.r_content }}', '{{ reply.r_code }}')" {% if reply.r_no != m_no %}style="display: none;"{% endif %}>
+                        수정                        
+                      </button> -->
+                      <a href="javascript:void(0);" onclick="re_edit('{{ reply.r_num }}', '{{ reply.r_content }}', '{{ reply.r_code }}')" {% if reply.r_no != m_no %}style="display: none;"{% endif %} >
+                        <i class="fas fa-pencil-alt"></i>
+                      </a>
                       
                       {% if reply.r_no == m_no or i.b_no == m_no %}
-                      <button type="button" onclick="location.href='insreplydelete.do?ridx={{ reply.r_num }}&idx={{ reply.r_code }}'">삭제</button>
+                      <!-- <button type="button" onclick="location.href='insreplydelete.do?ridx={{ reply.r_num }}&idx={{ reply.r_code }}'">
+                        삭제
+                      </button> -->
+                      <a href="insreplydelete.do?ridx={{ reply.r_num }}&idx={{ reply.r_code }}">
+                        <i class="fas fa-times"></i>
+                      </a>
                       {% endif %}
                     </div>
                 </div>
