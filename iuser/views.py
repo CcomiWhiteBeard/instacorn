@@ -253,40 +253,5 @@ def inspwd_modify(request):
 
     return render(request, 'instacorn/home.html')
     
-#비밀번호 재설정(찾기)
-def password_reset_request(request):
-    if request.method == "POST":
-        password_reset_form = PasswordResetForm(request.POST)
-        print(request.POST)
-        if password_reset_form.is_valid():
-            data = password_reset_form.cleaned_data['email']
-            associated_users = get_user_model().objects.filter(Q(email=data))
-            print( associated_users, data)
-            print("찾은 사용자 수:", associated_users.count())
-            if associated_users.exists():    
-                for user in associated_users:
-                    subject = '비밀번호 재설정'
-                    email_template_name = "instacorn/pwd_reset_email.txt"
-                    
-                    c = {
-                        "email": user.email,
-                        'domain': settings.HOSTNAME,
-                        'site_name': 'instacorn',
-                        "uid": urlsafe_base64_encode(force_bytes(user.pk)),
-                        "user": user,
-                        'token': default_token_generator.make_token(user),
-                        'protocol': settings.PROTOCOL,
-                    }
-                    email = render_to_string(email_template_name, c)
-                    try:
-                        send_mail(subject, email, 'eunjeong474@gmail.com', [user.email], fail_silently=False)
-                    except BadHeaderError:
-                        return HttpResponse('Invalid header found.')
-                    return redirect("/inspwdreset/done/")
-                
-    password_reset_form = PasswordResetForm()
-    return render(
-        request=request,
-        template_name='instacorn/inspwdreset.html',
-        context={'password_reset_form': password_reset_form})
+
 

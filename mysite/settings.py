@@ -152,22 +152,5 @@ LOGOUT_REDIRECT_URL = '/'
 
 ASGI_APPLICATION = 'mysite.asgi.application'
 
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
-        },
-    },
-}
 
-# Email Settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'eunjeong474@gmail.com'
-EMAIL_HOST_PASSWORD = 'uvpj qaba kvji svec'
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-HOSTNAME='127.0.0.1:8000'
-PROTOCOL = 'http' if DEBUG else 'https'
+
